@@ -16,14 +16,15 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: 3,
       backgroundColor: "var(--darker-grey)",
       "&:hover": {
-        opacity: 0.6,
+        outline: "2px solid var(--lighter-grey)",
         cursor: "pointer",
       },
     },
     animePanel__title: {
       fontSize: 18,
+      fontWeight: 500,
       display: "block",
-      padding: "8px 4px",
+      padding: "8px",
     },
     animePanel__image: {
       maxWidth: 200,
@@ -40,22 +41,30 @@ interface SearchResultProps {
   data: Array<AnimeSearchResult>;
   loading: boolean;
   onAnimeSelect: OnAnimeSelectFunction;
+  className?: string;
 }
 
 interface OnAnimeSelectFunction {
-  (): void;
+  (malId: number): void;
 }
 
 const SearchResults: FunctionComponent<SearchResultProps> = ({
   data,
   loading,
   onAnimeSelect,
+  className,
 }) => {
   const classes = useStyles();
 
   const renderAnimePanel = (anime: AnimeSearchResult): JSX.Element => {
     return (
-      <div className={classes.animePanel} key={anime.mal_id}>
+      <div
+        className={classes.animePanel}
+        key={anime.mal_id}
+        onClick={(): void => {
+          onAnimeSelect(anime.mal_id);
+        }}
+      >
         <div className={classes.animePanel__title}>{anime.title}</div>
         <img
           alt={anime.title}
@@ -70,8 +79,10 @@ const SearchResults: FunctionComponent<SearchResultProps> = ({
     return <CircularProgress size={150} className={classes.loadingCircle} />;
   } else {
     return (
-      <div className={classes.root}>
-        {!loading && data.map((res) => renderAnimePanel(res))}
+      <div className={className}>
+        <div className={classes.root}>
+          {!loading && data.map((res) => renderAnimePanel(res))}
+        </div>
       </div>
     );
   }

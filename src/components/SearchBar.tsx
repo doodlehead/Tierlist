@@ -37,30 +37,37 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface SearchProps {
   onSearch: OnSearchFunc;
+  className?: string;
 }
 
 interface OnSearchFunc {
   (event: React.FormEvent<HTMLDivElement>): void;
 }
 
-const SearchBar: FunctionComponent<SearchProps> = ({ onSearch }) => {
+const SearchBar: FunctionComponent<SearchProps> = ({ onSearch, className }) => {
   const classes = useStyles();
 
   return (
-    <Paper component="form" className={classes.root} onSubmit={onSearch}>
-      <IconButton className={classes.iconButton} aria-label="menu">
-        <MenuIcon />
-      </IconButton>
-      <InputBase className={classes.input} placeholder="Search" name="search" />
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-      >
-        <SearchIcon />
-      </IconButton>
-      {/* <Divider className={classes.divider} orientation="vertical" /> */}
-    </Paper>
+    <div className={className}>
+      <Paper component="form" className={classes.root} onSubmit={onSearch}>
+        <IconButton className={classes.iconButton} aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="Search"
+          name="search"
+        />
+        <IconButton
+          type="submit"
+          className={classes.iconButton}
+          aria-label="search"
+        >
+          <SearchIcon />
+        </IconButton>
+        {/* <Divider className={classes.divider} orientation="vertical" /> */}
+      </Paper>
+    </div>
   );
 };
 
