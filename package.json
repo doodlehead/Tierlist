@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "serve": "serve -s build",
     "lint": "eslint --ext .tsx src/",
     "build": "react-scripts build",
     "test": "react-scripts test",

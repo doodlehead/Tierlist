@@ -22,13 +22,16 @@ export interface AnimeSearchResult {
 /**
  * Use Jikan's HTTP API to search MAL anime
  * @param searchQuery The search term to use
+ * @param limit Max results returned
  */
 export const searchAnime = (
-  searchQuery: string
+  searchQuery: string,
+  limit?: number
 ): Promise<AxiosResponse<any>> => {
   return axios.get("https://api.jikan.moe/v3/search/anime", {
     params: {
       q: searchQuery,
+      limit,
     },
   });
 };

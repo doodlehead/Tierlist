@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       flex: 1,
       color: "var(--lighter-grey)",
+      fontSize: 20,
     },
     iconButton: {
       padding: 10,
