@@ -1,9 +1,25 @@
-
 :root {
   --darker-grey: rgb(32, 34, 37);
   --dark-grey: #282c34;
   --light-grey: #414855;
   --lighter-grey: #dcddde;
+
+  //tier colours
+  --tier-red: #ff7f7f;
+  --tier-red-orange: #ffbf7f;
+  --tier-orange: #ffdf7e;
+  --tier-yellow: #fdff7f;
+  --tier-yellow-green: #bfff7e;
+  --tier-green: #7eff7e;
+  --tier-cyan: #7effff;
+  --tier-blue: #7fbfff;
+  --tier-dark-blue: #7f7fff;
+  --tier-pink: #ff7fff;
+  --tier-purple: #bf7fbf;
+  --tier-black: #3b3b3b;
+  --tier-dark-grey: #858585;
+  --tier-grey: #cfcfcf;
+  --tier-white: #f7f7f7;
 }
 
 #app {
@@ -17,6 +33,7 @@
   //color: white;
   color: var(--lighter-grey);
   text-align: center;
+  min-width: 500;
 }
 
 #appContent {
@@ -36,7 +53,6 @@
 //     animation: App-logo-spin infinite 20s linear;
 //   }
 // }
-
 
 .App-link {
   color: #61dafb;

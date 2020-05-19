@@ -11,7 +11,7 @@ import {
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 //import { AxiosResponse } from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import TierList from "../components/TierList";
+import TierList from "../components/TierList/TierList";
 
 //TODO: validate inputs
 
@@ -33,13 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ListMaker: React.FunctionComponent = () => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<Array<AnimeSearchResult>>(
-    []
-  );
+  const [searchResult, setSearchResult] = useState<AnimeSearchResult[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [characterData, setCharacterData] = useState<Array<AnimeCharacterData>>(
-    []
-  );
+  const [characterData, setCharacterData] = useState<AnimeCharacterData[]>([]);
 
   const classes = useStyles();
 

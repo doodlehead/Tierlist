@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /* eslint-enable @typescript-eslint/camelcase */
 
 interface SearchResultProps {
-  data: Array<AnimeSearchResult>;
+  data: AnimeSearchResult[];
   loading: boolean;
   onAnimeSelect: OnAnimeSelectFunction;
   className?: string;
@@ -76,7 +76,8 @@ const SearchResults: FunctionComponent<SearchResultProps> = ({
   };
 
   if (loading) {
-    return <CircularProgress size={150} className={classes.loadingCircle} />;
+    //return <CircularProgress size={150} className={classes.loadingCircle} />;
+    return <div></div>;
   } else {
     return (
       <div className={className}>

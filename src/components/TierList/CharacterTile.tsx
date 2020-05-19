@@ -1,6 +1,8 @@
-import React, { Component, FunctionComponent } from "react";
+import { AnimeCharacterData } from "../../utils/Jikan";
+import React, { Component, FC, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { AnimeCharacterData } from "../utils/Jikan";
+
+const IMAGE_SIZE = 100;
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
@@ -11,10 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     characterTile: {
       position: "relative",
-      //flexBasis: "100px",
       flexGrow: 0,
       border: "1px solid var(--lighter-grey)",
-      height: 120,
+      height: IMAGE_SIZE,
       overflow: "hidden",
     },
     characterTile__name: {
@@ -29,42 +30,35 @@ const useStyles = makeStyles((theme: Theme) =>
       textOverflow: "ellipsis",
       overflow: "hidden",
       backgroundColor: "rgb(20, 20, 20, 0.65)",
+      padding: "3px 4px",
     },
     characterTile__image: {
-      maxWidth: 120,
+      maxWidth: IMAGE_SIZE,
       height: "auto",
     },
   })
 );
 /* eslint-enable @typescript-eslint/camelcase */
 
-interface TierListProps {
-  characterData: Array<AnimeCharacterData>;
+interface CharacterTileProps {
+  char: AnimeCharacterData;
 }
 
-const TierList: FunctionComponent<TierListProps> = ({
-  characterData,
-}): JSX.Element => {
+const CharacterTile: FC<CharacterTileProps> = ({ char }): JSX.Element => {
   const classes = useStyles();
 
-  const renderCharacter = (char: AnimeCharacterData): JSX.Element => {
-    return (
-      <div className={classes.characterTile} key={char.mal_id}>
-        <div className={classes.characterTile__name}>{char.name}</div>
-        <img
-          alt={char.name}
-          src={char.image_url}
-          className={classes.characterTile__image}
-        />
-      </div>
-    );
-  };
-
   return (
-    <div className={classes.root}>
-      {characterData.map((char) => renderCharacter(char))}
+    <div className={classes.characterTile} key={char.mal_id}>
+      <div className={classes.characterTile__name} title={char.name}>
+        {char.name}
+      </div>
+      <img
+        alt={char.name}
+        src={char.image_url}
+        className={classes.characterTile__image}
+      />
     </div>
   );
 };
 
-export default TierList;
+export default CharacterTile;

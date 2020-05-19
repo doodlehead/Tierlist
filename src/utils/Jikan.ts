@@ -29,11 +29,17 @@ export interface AnimeCharacterData {
   mal_id: number;
   name: string;
   role: CharacterRole;
-  voice_actors: Array<any>;
+  voice_actors: any[];
 }
 
+export interface DragItem {
+  id: number;
+}
+
+export interface DragAnimeCharItem extends AnimeCharacterData, DragItem {}
+
 /**
- * Use Jikan's HTTP API to search MAL anime
+ * Search MAL for a matching anime
  * @param searchQuery The search term to use
  * @param limit Max results returned
  */
@@ -49,6 +55,10 @@ export const searchAnime = (
   });
 };
 
+/**
+ * Gets an anime's staff and character list.
+ * @param malId The anime's id to get the info for
+ */
 export const getAnimeCharactersStaff = (
   malId: number
 ): Promise<AxiosResponse<any>> => {

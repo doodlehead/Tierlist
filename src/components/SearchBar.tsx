@@ -1,4 +1,4 @@
-import React, { Component, FunctionComponent } from "react";
+import React, { Component, FunctionComponent, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -8,11 +8,13 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
+import Select from "@material-ui/core/Select";
+import { Menu, MenuItem, FormControl } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      padding: "2px 4px",
+      //padding: "2px 4px",
       display: "flex",
       alignItems: "center",
       margin: "0 40px",
@@ -21,16 +23,20 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       marginLeft: theme.spacing(1),
       flex: 1,
-      color: "var(--lighter-grey)",
+      //color: "var(--lighter-grey)",
       fontSize: 20,
     },
     iconButton: {
       padding: 10,
-      color: "var(--lighter-grey)",
+      //color: "var(--lighter-grey)",
     },
     divider: {
       height: 28,
       margin: 4,
+    },
+    select: {
+      //color: "var(--lighter-grey)",
+      padding: "0 12px",
     },
   })
 );
@@ -44,19 +50,43 @@ interface OnSearchFunc {
   (event: React.FormEvent<HTMLDivElement>): void;
 }
 
+enum SearchType {
+  Anime = "Anime",
+  Manga = "Manga",
+}
+
 const SearchBar: FunctionComponent<SearchProps> = ({ onSearch, className }) => {
   const classes = useStyles();
+  const [searchType, setSearchType] = useState(SearchType.Anime);
+
+  const handleChangeSearchType = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ): void => {
+    setSearchType(event.target.value as SearchType);
+  };
 
   return (
     <div className={className}>
       <Paper component="form" className={classes.root} onSubmit={onSearch}>
-        <IconButton className={classes.iconButton} aria-label="menu">
+        {/* <IconButton className={classes.iconButton} aria-label="menu">
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
+        <FormControl variant="outlined">
+          <Select
+            value={searchType}
+            onChange={handleChangeSearchType}
+            className={classes.select}
+          >
+            <MenuItem value={SearchType.Anime}>Anime</MenuItem>
+            <MenuItem value={SearchType.Manga}>Manga</MenuItem>
+          </Select>
+        </FormControl>
+        <Divider className={classes.divider} orientation="vertical" />
         <InputBase
           className={classes.input}
           placeholder="Search"
           name="search"
+          autoComplete="off"
         />
         <IconButton
           type="submit"

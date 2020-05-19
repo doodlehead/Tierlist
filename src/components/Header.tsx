@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
     },
-  }),
+  })
 );
 
 const Header = (): JSX.Element => {
