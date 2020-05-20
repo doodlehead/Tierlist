@@ -1,6 +1,5 @@
-import React, { Component, FunctionComponent } from "react";
+import React, { FC } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { AnimeSearchResult, Rating } from "../utils/Jikan";
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -12,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
       gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
     },
     animePanel: {
-      //border: "1px solid red",
       borderRadius: 3,
       backgroundColor: "var(--darker-grey)",
       "&:hover": {
@@ -40,18 +38,18 @@ const useStyles = makeStyles((theme: Theme) =>
 interface SearchResultProps {
   data: AnimeSearchResult[];
   loading: boolean;
-  onAnimeSelect: OnAnimeSelectFunction;
+  onSelect: OnSelectFunction;
   className?: string;
 }
 
-interface OnAnimeSelectFunction {
+interface OnSelectFunction {
   (malId: number): void;
 }
 
-const SearchResults: FunctionComponent<SearchResultProps> = ({
+const SearchResults: FC<SearchResultProps> = ({
   data,
   loading,
-  onAnimeSelect,
+  onSelect,
   className,
 }) => {
   const classes = useStyles();
@@ -72,7 +70,7 @@ const SearchResults: FunctionComponent<SearchResultProps> = ({
         className={classes.animePanel}
         key={anime.mal_id}
         onClick={(): void => {
-          onAnimeSelect(anime.mal_id);
+          onSelect(anime.mal_id);
         }}
       >
         <div className={classes.animePanel__title}>{anime.title}</div>

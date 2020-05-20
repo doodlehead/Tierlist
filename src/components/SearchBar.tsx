@@ -43,19 +43,27 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface SearchProps {
   onSearch: OnSearchFunc;
+  onChangeSearchType: OnChangeSearchType;
   className?: string;
 }
 
 interface OnSearchFunc {
   (event: React.FormEvent<HTMLDivElement>): void;
 }
+interface OnChangeSearchType {
+  (event: React.ChangeEvent<{ value: SearchType }>): void;
+}
 
-enum SearchType {
+export enum SearchType {
   Anime = "Anime",
   Manga = "Manga",
 }
 
-const SearchBar: FunctionComponent<SearchProps> = ({ onSearch, className }) => {
+const SearchBar: FunctionComponent<SearchProps> = ({
+  onSearch,
+  onChangeSearchType,
+  className,
+}) => {
   const classes = useStyles();
   const [searchType, setSearchType] = useState(SearchType.Anime);
 
@@ -63,6 +71,14 @@ const SearchBar: FunctionComponent<SearchProps> = ({ onSearch, className }) => {
     event: React.ChangeEvent<{ value: unknown }>
   ): void => {
     setSearchType(event.target.value as SearchType);
+
+    //onChangeSearchType(event);
+
+    //TODO: find a better way...
+    onChangeSearchType({
+      ...event,
+      target: { value: event.target.value as SearchType },
+    } as React.ChangeEvent<{ value: SearchType }>);
   };
 
   return (

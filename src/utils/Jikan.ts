@@ -65,6 +65,23 @@ export const searchAnime = (
 };
 
 /**
+ * Search MAL for a matching manga
+ * @param searchQuery The search term to use
+ * @param limit Max results returned
+ */
+export const searchManga = (
+  searchQuery: string,
+  limit?: number
+): Promise<AxiosResponse<any>> => {
+  return axios.get("https://api.jikan.moe/v3/search/manga", {
+    params: {
+      q: searchQuery,
+      limit,
+    },
+  });
+};
+
+/**
  * Gets an anime's staff and character list.
  * @param malId The anime's id to get the info for
  */
@@ -72,4 +89,14 @@ export const getAnimeCharactersStaff = (
   malId: number
 ): Promise<AxiosResponse<any>> => {
   return axios.get(`https://api.jikan.moe/v3/anime/${malId}/characters_staff`);
+};
+
+/**
+ * Gets a manga's character list.
+ * @param malId The manga's id to get the info for
+ */
+export const getMangaCharacters = (
+  malId: number
+): Promise<AxiosResponse<any>> => {
+  return axios.get(`https://api.jikan.moe/v3/manga/${malId}/characters`);
 };
