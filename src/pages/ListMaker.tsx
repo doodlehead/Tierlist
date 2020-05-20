@@ -71,7 +71,7 @@ const ListMaker: React.FunctionComponent = () => {
 
   return (
     <div className="pageRoot">
-      <h2>Anime Tierlist Maker</h2>
+      <h2>Tierlist Maker</h2>
       <SearchBar onSearch={handleSearch} className={classes.searchBar} />
       {/* <h2>Tier list maker in progress!</h2> */}
       {!(characterData.length > 0) && (

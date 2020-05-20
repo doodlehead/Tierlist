@@ -1,7 +1,7 @@
 import React, { Component, FunctionComponent } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { AnimeSearchResult } from "../utils/Jikan";
+import { AnimeSearchResult, Rating } from "../utils/Jikan";
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,6 +55,16 @@ const SearchResults: FunctionComponent<SearchResultProps> = ({
   className,
 }) => {
   const classes = useStyles();
+  const filteredData = data.filter((elem) => {
+    //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
+
+    console.log(`${elem.title} ${elem.rated}`);
+
+    return (
+      Object.values(Rating).indexOf(elem.rated) <=
+      Object.values(Rating).indexOf(Rating.r)
+    );
+  });
 
   const renderAnimePanel = (anime: AnimeSearchResult): JSX.Element => {
     return (
@@ -76,13 +86,12 @@ const SearchResults: FunctionComponent<SearchResultProps> = ({
   };
 
   if (loading) {
-    //return <CircularProgress size={150} className={classes.loadingCircle} />;
     return <div></div>;
   } else {
     return (
       <div className={className}>
         <div className={classes.root}>
-          {!loading && data.map((res) => renderAnimePanel(res))}
+          {!loading && filteredData.map((res) => renderAnimePanel(res))}
         </div>
       </div>
     );

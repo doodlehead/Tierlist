@@ -96,6 +96,7 @@ const TierList: FC<TierListProps> = ({ characterData }): JSX.Element => {
       <div ref={tierlistEl} className={classes.root}>
         {DefaultTiers.map((tier, index) => (
           <Tier
+            key={index}
             name={tier}
             listItems={[]}
             group="tierlist"

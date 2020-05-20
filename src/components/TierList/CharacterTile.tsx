@@ -7,17 +7,13 @@ const IMAGE_SIZE = 100;
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      cursor: "pointer",
-    },
     characterTile: {
       position: "relative",
       flexGrow: 0,
       outline: "1px solid var(--lighter-grey)",
       height: IMAGE_SIZE,
       overflow: "hidden",
+      cursor: "pointer",
     },
     characterTile__name: {
       position: "absolute",
