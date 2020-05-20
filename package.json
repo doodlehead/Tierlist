@@ -11,6 +11,8 @@
     "@types/jest": "^25.2.2",
     "@types/node": "^14.0.1",
     "axios": "^0.19.2",
+    "dom-to-image": "^2.6.0",
+    "file-saver": "^2.0.2",
     "jikan-client": "^1.0.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -55,6 +57,8 @@
     ]
   },
   "devDependencies": {
+    "@types/dom-to-image": "^2.6.0",
+    "@types/file-saver": "^2.0.1",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^2.33.0",

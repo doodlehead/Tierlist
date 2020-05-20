@@ -1,19 +1,28 @@
-import React, { Component, FunctionComponent, useState } from "react";
+import React, { FC, useState, useRef } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { AnimeCharacterData, DragAnimeCharItem } from "../../utils/Jikan";
 import { ReactSortable } from "react-sortablejs";
 import CharacterTile from "./CharacterTile";
 import Tier from "./Tier";
 import { DefaultColourOrder, DefaultTiers } from "./constants";
+import domtoimage from "dom-to-image";
+import Button from "@material-ui/core/Button";
+import { saveAs } from "file-saver";
 
+//Is 100 too big?
 const IMAGE_SIZE = 100;
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      padding: 10,
+      backgroundColor: "var(--dark-grey)",
+    },
+    unrankedList: {
       display: "flex",
       flexWrap: "wrap",
+      marginTop: 20,
     },
     characterTile: {
       position: "relative",
@@ -40,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: IMAGE_SIZE,
       height: "auto",
     },
+    exportBtn: {
+      marginBottom: theme.spacing(2),
+    },
   })
 );
 /* eslint-enable @typescript-eslint/camelcase */
@@ -48,42 +60,59 @@ interface TierListProps {
   characterData: AnimeCharacterData[];
 }
 
-const TierList: FunctionComponent<TierListProps> = ({
-  characterData,
-}): JSX.Element => {
+const TierList: FC<TierListProps> = ({ characterData }): JSX.Element => {
   const classes = useStyles();
+  const tierlistEl = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<DragAnimeCharItem[]>(
     characterData.map((char) => {
       return { id: char.mal_id, ...char } as DragAnimeCharItem;
     })
   );
 
+  const handleExport = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    if (tierlistEl.current) {
+      domtoimage
+        .toBlob(tierlistEl.current)
+        .then((blob: Blob) => {
+          saveAs(blob, `tierlist.png`);
+        })
+        .catch((error: any) => {
+          console.error("Could not generate image", error);
+        });
+    }
+  };
+
   return (
     <div>
-      {DefaultTiers.map((tier, index) => (
-        <Tier
-          name={tier}
-          listItems={[]}
-          group="tierlist"
-          labelColour={`var(--tier-${DefaultColourOrder[index]})`}
-        />
-      ))}
-      <ReactSortable
-        group="tierlist"
-        list={list}
-        setList={setList}
-        className={classes.root}
+      <Button
+        onClick={handleExport}
+        className={classes.exportBtn}
+        variant="outlined"
       >
-        {list.map((char) => (
-          <CharacterTile char={char} key={char.mal_id} />
+        Export to image
+      </Button>
+      <div ref={tierlistEl} className={classes.root}>
+        {DefaultTiers.map((tier, index) => (
+          <Tier
+            name={tier}
+            listItems={[]}
+            group="tierlist"
+            labelColour={`var(--tier-${DefaultColourOrder[index]})`}
+          />
         ))}
-      </ReactSortable>
-      {/* <Tier
-        name="A"
-        listItems={[]}
-        group="tierlist"
-        labelColour={`var(--tier-${DefaultColourOrder[0]})`}
-      /> */}
+        <ReactSortable
+          group="tierlist"
+          list={list}
+          setList={setList}
+          className={classes.unrankedList}
+        >
+          {list.map((char) => (
+            <CharacterTile char={char} key={char.mal_id} />
+          ))}
+        </ReactSortable>
+      </div>
     </div>
   );
 };

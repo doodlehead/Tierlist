@@ -1,4 +1,4 @@
-import React, { Component, useState, FC } from "react";
+import React, { useState, FC } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { ReactSortable } from "react-sortablejs";
 import { DragAnimeCharItem } from "../../utils/Jikan";
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexWrap: "wrap",
-      border: "1px solid red",
+      outline: "1px solid red",
       minHeight: 100,
       //minWidth: 600,
     },

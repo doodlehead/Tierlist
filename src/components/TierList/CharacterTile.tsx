@@ -10,11 +10,12 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexWrap: "wrap",
+      cursor: "pointer",
     },
     characterTile: {
       position: "relative",
       flexGrow: 0,
-      border: "1px solid var(--lighter-grey)",
+      outline: "1px solid var(--lighter-grey)",
       height: IMAGE_SIZE,
       overflow: "hidden",
     },
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "3px 4px",
     },
     characterTile__image: {
-      maxWidth: IMAGE_SIZE,
+      width: IMAGE_SIZE,
       height: "auto",
     },
   })
@@ -44,6 +45,7 @@ interface CharacterTileProps {
   char: AnimeCharacterData;
 }
 
+//Tile that represents a character.
 const CharacterTile: FC<CharacterTileProps> = ({ char }): JSX.Element => {
   const classes = useStyles();
 
