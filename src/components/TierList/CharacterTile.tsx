@@ -1,5 +1,5 @@
 import { AnimeCharacterData } from "../../utils/Jikan";
-import React, { Component, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 const IMAGE_SIZE = 100;

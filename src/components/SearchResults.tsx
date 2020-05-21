@@ -56,7 +56,7 @@ const SearchResults: FC<SearchResultProps> = ({
   const filteredData = data.filter((elem) => {
     //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
 
-    console.log(`${elem.title} ${elem.rated}`);
+    //console.log(`${elem.title} ${elem.rated}`);
 
     return (
       Object.values(Rating).indexOf(elem.rated) <=

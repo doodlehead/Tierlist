@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ListMaker.scss";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
@@ -11,10 +11,11 @@ import {
   getMangaCharacters,
 } from "../utils/Jikan";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-//import { AxiosResponse } from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
 import { SearchType } from "../components/SearchBar";
+import { Snackbar } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 
 //TODO: validate inputs
 
@@ -35,16 +36,33 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ListMaker: React.FunctionComponent = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
   const [searchResult, setSearchResult] = useState<AnimeSearchResult[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [malId, setMalId] = useState<number>();
   const [characterData, setCharacterData] = useState<AnimeCharacterData[]>([]);
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.Anime);
 
   const classes = useStyles();
 
-  //Do a search when searchValue changes
+  //Show the snackbar when there's an error message available
   useEffect(() => {
+    if (errorMsg) {
+      setShowSnackbar(true);
+    }
+  }, [errorMsg]);
+
+  //Handle a search submit
+  const handleSearch = (event: React.FormEvent<HTMLDivElement>): void => {
+    event.preventDefault();
+
+    //Clear the previous search's results
+    setCharacterData([]);
+    //Get the search value
+    const searchValue = ((event.target as HTMLFormElement).elements as any)
+      .search.value;
+
     if (searchValue.length >= 3) {
       setLoading(true);
 
@@ -60,46 +78,53 @@ const ListMaker: React.FunctionComponent = () => {
         });
       }
     }
-  }, [searchValue]);
-
-  const handleSearch = (event: React.FormEvent<HTMLDivElement>): void => {
-    event.preventDefault();
-
-    setCharacterData([]);
-
-    setSearchValue(
-      ((event.target as HTMLFormElement).elements as any).search.value
-    );
   };
 
+  //Handle when a user clicks an anime/manga entry
   const handleOnSelect = (malId: number): void => {
     setLoading(true);
 
     if (searchType === SearchType.Anime) {
       getAnimeCharactersStaff(malId).then((res) => {
-        setCharacterData(res.data.characters);
+        if (!res || res.data.characters.length === 0) {
+          setErrorMsg("Uh oh, looks like that Anime entry has no characters.");
+        } else {
+          setMalId(malId);
+          setCharacterData(res.data.characters);
+        }
         setLoading(false);
       });
     } else if (searchType === SearchType.Manga) {
       getMangaCharacters(malId).then((res) => {
-        setCharacterData(res.data.characters);
+        if (!res || res.data.characters.length === 0) {
+          setErrorMsg("Uh oh, looks like that Manga entry has no characters.");
+        } else {
+          setMalId(malId);
+          setCharacterData(res.data.characters);
+        }
         setLoading(false);
       });
     }
   };
 
+  const handleCloseError = (): void => {
+    setShowSnackbar(false);
+    setErrorMsg("");
+  };
+
   return (
     <div className="pageRoot">
-      <h2>Tierlist Maker</h2>
+      {/* <h2>Tierlist Maker</h2> */}
       <SearchBar
         onSearch={handleSearch}
         className={classes.searchBar}
+        defaultValue={searchType}
         onChangeSearchType={(event): void => {
           setSearchType(event.target.value);
+          //searchType.current = event.target.value;
           console.log(event.target.value);
         }}
       />
-      {/* <h2>Tier list maker in progress!</h2> */}
       {!(characterData.length > 0) && (
         <SearchResults
           data={searchResult}
@@ -110,7 +135,24 @@ const ListMaker: React.FunctionComponent = () => {
       {isLoading && (
         <CircularProgress size={150} className={classes.loadingCircle} />
       )}
-      {characterData.length > 0 && <TierList characterData={characterData} />}
+      {characterData.length > 0 && malId && (
+        <TierList malId={malId} characterData={characterData} />
+      )}
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseError}
+          severity="error"
+        >
+          {errorMsg}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

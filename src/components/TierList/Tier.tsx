@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { ReactSortable } from "react-sortablejs";
 import { DragAnimeCharItem } from "../../utils/Jikan";
@@ -35,16 +35,25 @@ interface TierProps {
   group: string;
   listItems: DragAnimeCharItem[];
   labelColour?: string;
+  index: number;
+  onTierChange: (list: DragAnimeCharItem[], index: number) => void;
 }
 
+//Represents a tier in a tierlist. Example: "A-tier"
 const Tier: FC<TierProps> = ({
   name,
   group,
   listItems,
   labelColour,
+  index,
+  onTierChange,
 }): JSX.Element => {
   const classes = useStyles();
-  const [list, setList] = useState<DragAnimeCharItem[]>(listItems);
+  const [list, setList] = useState<DragAnimeCharItem[]>(listItems || []);
+
+  useEffect(() => {
+    onTierChange(list, index);
+  }, [list, index]);
 
   return (
     <div className={classes.root}>

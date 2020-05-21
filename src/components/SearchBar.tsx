@@ -1,12 +1,12 @@
-import React, { Component, FunctionComponent, useState } from "react";
+import React, { FC, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+//import Button from "@material-ui/core/Button";
+//import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import MenuIcon from "@material-ui/icons/Menu";
+//import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
 import Select from "@material-ui/core/Select";
 import { Menu, MenuItem, FormControl } from "@material-ui/core";
@@ -45,6 +45,7 @@ interface SearchProps {
   onSearch: OnSearchFunc;
   onChangeSearchType: OnChangeSearchType;
   className?: string;
+  defaultValue: SearchType;
 }
 
 interface OnSearchFunc {
@@ -59,20 +60,19 @@ export enum SearchType {
   Manga = "Manga",
 }
 
-const SearchBar: FunctionComponent<SearchProps> = ({
+const SearchBar: FC<SearchProps> = ({
   onSearch,
   onChangeSearchType,
   className,
+  defaultValue,
 }) => {
   const classes = useStyles();
-  const [searchType, setSearchType] = useState(SearchType.Anime);
+  const [searchType, setSearchType] = useState(defaultValue);
 
   const handleChangeSearchType = (
     event: React.ChangeEvent<{ value: unknown }>
   ): void => {
     setSearchType(event.target.value as SearchType);
-
-    //onChangeSearchType(event);
 
     //TODO: find a better way...
     onChangeSearchType({
@@ -84,9 +84,6 @@ const SearchBar: FunctionComponent<SearchProps> = ({
   return (
     <div className={className}>
       <Paper component="form" className={classes.root} onSubmit={onSearch}>
-        {/* <IconButton className={classes.iconButton} aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
         <FormControl variant="outlined">
           <Select
             value={searchType}
@@ -111,7 +108,6 @@ const SearchBar: FunctionComponent<SearchProps> = ({
         >
           <SearchIcon />
         </IconButton>
-        {/* <Divider className={classes.divider} orientation="vertical" /> */}
       </Paper>
     </div>
   );

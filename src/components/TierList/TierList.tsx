@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { AnimeCharacterData, DragAnimeCharItem } from "../../utils/Jikan";
 import { ReactSortable } from "react-sortablejs";
@@ -8,6 +8,9 @@ import { DefaultColourOrder, DefaultTiers } from "./constants";
 import domtoimage from "dom-to-image";
 import Button from "@material-ui/core/Button";
 import { saveAs } from "file-saver";
+//import { Save, SaveAlt } from "@material-ui/icons";
+import SaveIcon from "@material-ui/icons/Save";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
 
 //Is 100 too big?
 const IMAGE_SIZE = 100;
@@ -49,34 +52,70 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: IMAGE_SIZE,
       height: "auto",
     },
-    exportBtn: {
+    button: {
+      marginRight: theme.spacing(1),
+    },
+    buttonGroup: {
+      display: "flex",
       marginBottom: theme.spacing(2),
+    },
+    btnIcon: {
+      marginRight: theme.spacing(1),
     },
   })
 );
 /* eslint-enable @typescript-eslint/camelcase */
 
 interface TierListProps {
+  malId: number;
   characterData: AnimeCharacterData[];
 }
 
-const TierList: FC<TierListProps> = ({ characterData }): JSX.Element => {
+interface TierData {
+  sorted: DragAnimeCharItem[][];
+  unsorted: DragAnimeCharItem[];
+}
+
+const store = window.localStorage;
+const getSaveData = (
+  malId: number,
+  characterData: DragAnimeCharItem[]
+): TierData => {
+  const saveData = store.getItem(`${malId}`);
+  if (saveData) {
+    return JSON.parse(saveData) as TierData;
+  } else {
+    return {
+      sorted: [],
+      unsorted: characterData,
+    };
+  }
+};
+
+const TierList: FC<TierListProps> = ({ malId, characterData }): JSX.Element => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
-  const [list, setList] = useState<DragAnimeCharItem[]>(
-    characterData.map((char) => {
-      return { id: char.mal_id, ...char } as DragAnimeCharItem;
-    })
+  //const [tierRefs, setTierRefs] = useState<Node[]>([]);
+  const tierData = useRef<TierData>(
+    getSaveData(
+      malId,
+      characterData.map((char) => {
+        return { id: char.mal_id, ...char } as DragAnimeCharItem;
+      })
+    )
   );
 
-  const handleExport = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
+  const [list, setList] = useState<DragAnimeCharItem[]>(
+    tierData.current.unsorted
+  );
+
+  //Handle "download image"
+  const handleExport = (): void => {
     if (tierlistEl.current) {
       domtoimage
         .toBlob(tierlistEl.current)
         .then((blob: Blob) => {
-          saveAs(blob, `tierlist.png`);
+          saveAs(blob, `tierlist-${malId}.png`);
         })
         .catch((error: any) => {
           console.error("Could not generate image", error);
@@ -84,21 +123,46 @@ const TierList: FC<TierListProps> = ({ characterData }): JSX.Element => {
     }
   };
 
+  //Handle save to browser localstorage
+  const handleSave = (): void => {
+    tierData.current.unsorted = list; //Update the unsorted list
+    store.setItem(`${malId}`, JSON.stringify(tierData.current));
+  };
+
+  //Propogate state upwards from Tier
+  const handleTierChange = (list: DragAnimeCharItem[], index: number): void => {
+    tierData.current.sorted[index] = list;
+  };
+
   return (
     <div>
-      <Button
-        onClick={handleExport}
-        className={classes.exportBtn}
-        variant="outlined"
-      >
-        Export to image
-      </Button>
+      <div className={classes.buttonGroup}>
+        <Button
+          onClick={handleExport}
+          className={classes.button}
+          variant="outlined"
+        >
+          <SaveAltIcon className={classes.btnIcon} />
+          Download image
+        </Button>
+        <Button
+          onClick={handleSave}
+          className={classes.button}
+          variant="outlined"
+        >
+          <SaveIcon className={classes.btnIcon} />
+          Save
+        </Button>
+      </div>
       <div ref={tierlistEl} className={classes.root}>
         {DefaultTiers.map((tier, index) => (
           <Tier
+            index={index}
             key={index}
+            //ref={tierRefs[index]}
+            onTierChange={handleTierChange}
             name={tier}
-            listItems={[]}
+            listItems={tierData.current.sorted[index]}
             group="tierlist"
             labelColour={`var(--tier-${DefaultColourOrder[index]})`}
           />
