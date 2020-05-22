@@ -14,20 +14,19 @@ import { Menu, MenuItem, FormControl } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      //padding: "2px 4px",
       display: "flex",
       alignItems: "center",
-      margin: "0 40px",
+      margin: "0 8px",
       backgroundColor: "var(--darker-grey)",
     },
     input: {
       marginLeft: theme.spacing(1),
       flex: 1,
       //color: "var(--lighter-grey)",
-      fontSize: 20,
+      fontSize: 16,
     },
     iconButton: {
-      padding: 10,
+      padding: "0 10px",
       //color: "var(--lighter-grey)",
     },
     divider: {
@@ -36,7 +35,34 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     select: {
       //color: "var(--lighter-grey)",
-      padding: "0 12px",
+      padding: "0 8px",
+      fontSize: 14,
+    },
+    "@media only screen and (min-width: 768px)": {
+      root: {
+        display: "flex",
+        alignItems: "center",
+        margin: "0 40px",
+        backgroundColor: "var(--darker-grey)",
+      },
+      input: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+        //color: "var(--lighter-grey)",
+        fontSize: 20,
+      },
+      iconButton: {
+        padding: 10,
+        //color: "var(--lighter-grey)",
+      },
+      divider: {
+        height: 28,
+        margin: 4,
+      },
+      select: {
+        //color: "var(--lighter-grey)",
+        padding: "0 12px",
+      },
     },
   })
 );

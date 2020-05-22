@@ -2,8 +2,6 @@ import { AnimeCharacterData } from "../../utils/Jikan";
 import React, { FC, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-const IMAGE_SIZE = 100;
-
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "relative",
       flexGrow: 0,
       outline: "1px solid var(--lighter-grey)",
-      height: IMAGE_SIZE,
+      height: "var(--image-tile-size)",
       overflow: "hidden",
       cursor: "pointer",
     },
@@ -21,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       zIndex: 1,
-      fontSize: 14,
+      fontSize: 10,
       fontWeight: 500,
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
@@ -30,8 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "3px 4px",
     },
     characterTile__image: {
-      width: IMAGE_SIZE,
+      width: "var(--image-tile-size)",
       height: "auto",
+    },
+    "@media only screen and (min-width: 768px)": {
+      characterTile__name: {
+        fontSize: 14,
+      },
     },
   })
 );

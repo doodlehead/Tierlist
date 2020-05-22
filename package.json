@@ -19,6 +19,7 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-responsive": "^8.0.3",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
@@ -31,6 +32,7 @@
     "serve": "serve -s build",
     "lint": "eslint --ext .tsx src/",
     "build": "react-scripts build",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -65,6 +67,7 @@
     "@types/file-saver": "^2.0.1",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "@types/react-responsive": "^8.0.2",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "eslint-config-prettier": "^6.11.0",
@@ -72,6 +75,7 @@
     "eslint-plugin-react": "^7.20.0",
     "gh-pages": "^2.2.0",
     "prettier": "^2.0.5",
+    "source-map-explorer": "^2.4.2",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2"

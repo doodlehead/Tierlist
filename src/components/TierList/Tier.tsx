@@ -10,22 +10,26 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexWrap: "wrap",
       outline: "1px solid red",
-      minHeight: 100,
+      minHeight: "var(--image-tile-size)",
       //minWidth: 600,
     },
     tierLabel: {
-      width: "80px",
-      fontSize: 30,
+      width: 40,
+      fontSize: 20,
       fontWeight: 600,
       flexGrow: 0,
       color: "black",
-      //lineHeight: "100px",
     },
     list: {
       flexGrow: 1,
       display: "flex",
       flexWrap: "wrap",
       maxWidth: "calc(100% - 80px)",
+    },
+    "@media only screen and (min-width: 768px)": {
+      tierLabel: {
+        width: 80,
+      },
     },
   })
 );

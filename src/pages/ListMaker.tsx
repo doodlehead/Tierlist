@@ -30,7 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: "100px auto",
     },
     searchBar: {
-      marginBottom: 40,
+      marginBottom: 10,
+    },
+    "@media only screen and (min-width: 768px)": {
+      searchBar: {
+        marginBottom: 40,
+      },
     },
   })
 );
@@ -67,15 +72,27 @@ const ListMaker: React.FunctionComponent = () => {
       setLoading(true);
 
       if (searchType === SearchType.Anime) {
-        searchAnime(searchValue, 10).then((res) => {
-          setSearchResult(res.data.results);
-          setLoading(false);
-        });
+        searchAnime(searchValue, 10).then(
+          (res) => {
+            setSearchResult(res.data.results);
+            setLoading(false);
+          },
+          (err) => {
+            setErrorMsg("Could not search, either MAL or Jikan's API is down");
+            setLoading(false);
+          }
+        );
       } else if (searchType === SearchType.Manga) {
-        searchManga(searchValue, 10).then((res) => {
-          setSearchResult(res.data.results);
-          setLoading(false);
-        });
+        searchManga(searchValue, 10).then(
+          (res) => {
+            setSearchResult(res.data.results);
+            setLoading(false);
+          },
+          (err) => {
+            setErrorMsg("Could not search, either MAL or Jikan's API is down");
+            setLoading(false);
+          }
+        );
       }
     }
   };

@@ -11,13 +11,20 @@ import { saveAs } from "file-saver";
 //import { Save, SaveAlt } from "@material-ui/icons";
 import SaveIcon from "@material-ui/icons/Save";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import MediaQuery from "react-responsive";
 
 //Is 100 too big?
-const IMAGE_SIZE = 100;
+//const IMAGE_SIZE = 100;
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    // ":root": {
+    //   "--imageSize": "50px",
+    //   "@media only screen and (min-width: 768px)": {
+    //     "--imageSize": "100px",
+    //   },
+    // },
     root: {
       padding: 10,
       backgroundColor: "var(--dark-grey)",
@@ -27,31 +34,31 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: "wrap",
       marginTop: 20,
     },
-    characterTile: {
-      position: "relative",
-      flexGrow: 0,
-      border: "1px solid var(--lighter-grey)",
-      height: IMAGE_SIZE,
-      overflow: "hidden",
-    },
-    characterTile__name: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 1,
-      fontSize: 14,
-      fontWeight: 500,
-      whiteSpace: "nowrap",
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-      backgroundColor: "rgb(20, 20, 20, 0.65)",
-      padding: "3px 4px",
-    },
-    characterTile__image: {
-      maxWidth: IMAGE_SIZE,
-      height: "auto",
-    },
+    // characterTile: {
+    //   position: "relative",
+    //   flexGrow: 0,
+    //   border: "1px solid var(--lighter-grey)",
+    //   height: "var(--imageSize)",
+    //   overflow: "hidden",
+    // },
+    // characterTile__name: {
+    //   position: "absolute",
+    //   top: 0,
+    //   left: 0,
+    //   right: 0,
+    //   zIndex: 1,
+    //   fontSize: 14,
+    //   fontWeight: 500,
+    //   whiteSpace: "nowrap",
+    //   textOverflow: "ellipsis",
+    //   overflow: "hidden",
+    //   backgroundColor: "rgb(20, 20, 20, 0.65)",
+    //   padding: "3px 4px",
+    // },
+    // characterTile__image: {
+    //   maxWidth: "var(--imageSize)",
+    //   height: "auto",
+    // },
     button: {
       marginRight: theme.spacing(1),
     },
@@ -143,7 +150,7 @@ const TierList: FC<TierListProps> = ({ malId, characterData }): JSX.Element => {
           variant="outlined"
         >
           <SaveAltIcon className={classes.btnIcon} />
-          Download image
+          Download <MediaQuery minWidth={768}>image</MediaQuery>
         </Button>
         <Button
           onClick={handleSave}

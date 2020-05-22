@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
     },
+    "@media only screen and (min-width: 768px)": {
+      title: {
+        flexGrow: 1,
+      },
+    },
   })
 );
 
