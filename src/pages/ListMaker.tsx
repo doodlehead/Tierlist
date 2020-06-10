@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ListMaker: React.FunctionComponent = () => {
+const ListMaker: React.FC = () => {
   const [searchResult, setSearchResult] = useState<AnimeSearchResult[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [malId, setMalId] = useState<number>();
