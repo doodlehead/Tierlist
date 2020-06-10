@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: "wrap",
       outline: "1px solid red",
       minHeight: "var(--image-tile-size)",
-      //minWidth: 600,
     },
     tierLabel: {
       width: 40,
@@ -29,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     "@media only screen and (min-width: 768px)": {
       tierLabel: {
         width: 80,
+        fontSize: 24,
       },
     },
   })

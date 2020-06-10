@@ -47,7 +47,7 @@ const ListMaker: React.FunctionComponent = () => {
   const [characterData, setCharacterData] = useState<AnimeCharacterData[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [searchType, setSearchType] = useState<SearchType>(SearchType.Anime);
+  const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
 
   const classes = useStyles();
 
@@ -97,30 +97,44 @@ const ListMaker: React.FunctionComponent = () => {
     }
   };
 
-  //Handle when a user clicks an anime/manga entry
+  //Handle when a user clicks a search result entry
   const handleOnSelect = (malId: number): void => {
     setLoading(true);
 
     if (searchType === SearchType.Anime) {
-      getAnimeCharactersStaff(malId).then((res) => {
-        if (!res || res.data.characters.length === 0) {
-          setErrorMsg("Uh oh, looks like that Anime entry has no characters.");
-        } else {
-          setMalId(malId);
-          setCharacterData(res.data.characters);
-        }
-        setLoading(false);
-      });
+      getAnimeCharactersStaff(malId)
+        .then((res) => {
+          if (!res || res.data.characters.length === 0) {
+            setErrorMsg(
+              "Uh oh, looks like that Anime entry has no characters."
+            );
+          } else {
+            setMalId(malId);
+            setCharacterData(res.data.characters);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setErrorMsg(err.response.data.message);
+          setLoading(false);
+        });
     } else if (searchType === SearchType.Manga) {
-      getMangaCharacters(malId).then((res) => {
-        if (!res || res.data.characters.length === 0) {
-          setErrorMsg("Uh oh, looks like that Manga entry has no characters.");
-        } else {
-          setMalId(malId);
-          setCharacterData(res.data.characters);
-        }
-        setLoading(false);
-      });
+      getMangaCharacters(malId)
+        .then((res) => {
+          if (!res || res.data.characters.length === 0) {
+            setErrorMsg(
+              "Uh oh, looks like that Manga entry has no characters."
+            );
+          } else {
+            setMalId(malId);
+            setCharacterData(res.data.characters);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          setErrorMsg(err.response.data.message);
+          setLoading(false);
+        });
     }
   };
 

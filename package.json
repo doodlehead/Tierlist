@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.2",
+    "firebase": "^7.15.0",
     "jikan-client": "^1.0.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -41,8 +42,7 @@
       "react-app",
       "plugin:prettier/recommended",
       "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:@typescript-eslint/recommended"
+      "prettier/@typescript-eslint"
     ],
     "plugins": [
       "prettier",
@@ -50,6 +50,7 @@
       "@typescript-eslint"
     ]
   },
+  "prettier": {},
   "browserslist": {
     "production": [
       ">0.2%",

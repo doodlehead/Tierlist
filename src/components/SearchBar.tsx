@@ -22,19 +22,16 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       marginLeft: theme.spacing(1),
       flex: 1,
-      //color: "var(--lighter-grey)",
       fontSize: 16,
     },
     iconButton: {
       padding: "0 10px",
-      //color: "var(--lighter-grey)",
     },
     divider: {
       height: 28,
       margin: 4,
     },
     select: {
-      //color: "var(--lighter-grey)",
       padding: "0 8px",
       fontSize: 14,
     },
@@ -48,19 +45,16 @@ const useStyles = makeStyles((theme: Theme) =>
       input: {
         marginLeft: theme.spacing(1),
         flex: 1,
-        //color: "var(--lighter-grey)",
         fontSize: 20,
       },
       iconButton: {
         padding: 10,
-        //color: "var(--lighter-grey)",
       },
       divider: {
         height: 28,
         margin: 4,
       },
       select: {
-        //color: "var(--lighter-grey)",
         padding: "0 12px",
       },
     },
@@ -82,6 +76,8 @@ interface OnChangeSearchType {
 }
 
 export enum SearchType {
+  TVshow = "TVshow",
+  Movie = "Movie",
   Anime = "Anime",
   Manga = "Manga",
 }
@@ -116,6 +112,8 @@ const SearchBar: FC<SearchProps> = ({
             onChange={handleChangeSearchType}
             className={classes.select}
           >
+            <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
+            <MenuItem value={SearchType.Movie}>Movie</MenuItem>
             <MenuItem value={SearchType.Anime}>Anime</MenuItem>
             <MenuItem value={SearchType.Manga}>Manga</MenuItem>
           </Select>
