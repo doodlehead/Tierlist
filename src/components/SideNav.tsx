@@ -48,13 +48,13 @@ const SideNav: FC<SideNavProps> = ({ open, setShowSidebar }) => {
         //onKeyDown={toggleDrawer(anchor, false)}
       >
         <List>
-          <ListItem button onClick={() => history.push("/")}>
+          <ListItem button onClick={() => history.push("/Tierlist")}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={"Home"} />
           </ListItem>
-          <ListItem button onClick={() => history.push("/tierlist-maker")}>
+          <ListItem button onClick={() => history.push("/Tierlist/create")}>
             <ListItemIcon>
               <NoteAddIcon />
             </ListItemIcon>

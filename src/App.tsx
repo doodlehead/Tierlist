@@ -9,6 +9,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import SideNav from "./components/SideNav";
 import AppContext from "./contexts/AppContext";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Homepage from "./pages/Homepage";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -27,8 +28,11 @@ const App = (): React.ReactElement => {
           <div id="appContent">
             <Router>
               <Switch>
-                <Route path="/tierlist-maker">
+                <Route path="/Tierlist/create">
                   <ListMaker />
+                </Route>
+                <Route path="/Tierlist/">
+                  <Homepage />
                 </Route>
               </Switch>
               <SideNav />
