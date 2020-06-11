@@ -8,6 +8,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import SideNav from "./components/SideNav";
 import AppContext from "./contexts/AppContext";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -24,12 +25,17 @@ const App = (): React.ReactElement => {
         <AppContext.Provider value={{ showSidebar, setShowSidebar }}>
           <Header />
           <div id="appContent">
-            <ListMaker />
-            <SideNav />
+            <Router>
+              <Switch>
+                <Route path="/tierlist-maker">
+                  <ListMaker />
+                </Route>
+              </Switch>
+              <SideNav />
+            </Router>
           </div>
         </AppContext.Provider>
       </ThemeProvider>
-      {/* TODO: add routing here */}
     </div>
   );
 };
