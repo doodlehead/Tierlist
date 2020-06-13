@@ -47,16 +47,15 @@ export interface DragItem {
 
 export interface DragAnimeCharItem extends AnimeCharacterData, DragItem {}
 
+const baseUrl = "https://api.jikan.moe/v3";
+
 /**
  * Search MAL for a matching anime
  * @param searchQuery The search term to use
  * @param limit Max results returned
  */
-export const searchAnime = (
-  searchQuery: string,
-  limit?: number
-): Promise<AxiosResponse<any>> => {
-  return axios.get("https://api.jikan.moe/v3/search/anime", {
+export const searchAnime = (searchQuery: string, limit?: number) => {
+  return axios.get(`${baseUrl}/search/anime`, {
     params: {
       q: searchQuery,
       limit,
@@ -69,11 +68,8 @@ export const searchAnime = (
  * @param searchQuery The search term to use
  * @param limit Max results returned
  */
-export const searchManga = (
-  searchQuery: string,
-  limit?: number
-): Promise<AxiosResponse<any>> => {
-  return axios.get("https://api.jikan.moe/v3/search/manga", {
+export const searchManga = (searchQuery: string, limit?: number) => {
+  return axios.get(`${baseUrl}/search/manga`, {
     params: {
       q: searchQuery,
       limit,
@@ -85,18 +81,14 @@ export const searchManga = (
  * Gets an anime's staff and character list.
  * @param malId The anime's id to get the info for
  */
-export const getAnimeCharactersStaff = (
-  malId: number
-): Promise<AxiosResponse<any>> => {
-  return axios.get(`https://api.jikan.moe/v3/anime/${malId}/characters_staff`);
+export const getAnimeCharactersStaff = (malId: number) => {
+  return axios.get(`${baseUrl}/anime/${malId}/characters_staff`);
 };
 
 /**
  * Gets a manga's character list.
  * @param malId The manga's id to get the info for
  */
-export const getMangaCharacters = (
-  malId: number
-): Promise<AxiosResponse<any>> => {
-  return axios.get(`https://api.jikan.moe/v3/manga/${malId}/characters`);
+export const getMangaCharacters = (malId: number) => {
+  return axios.get(`${baseUrl}/manga/${malId}/characters`);
 };

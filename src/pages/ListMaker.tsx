@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./ListMaker.scss";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
@@ -10,12 +10,15 @@ import {
   AnimeCharacterData,
   getMangaCharacters,
 } from "../utils/Jikan";
+import { searchSeries } from "../utils/TVDB";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
 import { SearchType } from "../components/SearchBar";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+//import Firebase, { FirebaseContext } from "../components/Firebase";
+import axios from "axios";
 
 //TODO: validate inputs
 
@@ -40,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+//TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
 const ListMaker: React.FC = () => {
   const [searchResult, setSearchResult] = useState<AnimeSearchResult[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -48,8 +52,37 @@ const ListMaker: React.FC = () => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
+  const [token, setToken] = useState<string>(
+    localStorage.getItem("auth-token") || ""
+  );
+  //const firebase = useContext(FirebaseContext);
 
   const classes = useStyles();
+
+  //Run on first render
+  useEffect(() => {
+    const fetchData = async () => {
+      //TODO: this is probably bad practice. Store into a Context? Or something reactive?
+      let token = localStorage.getItem("auth-token");
+      if (!token) {
+        //TODO: move this to util file and decide on a schema for the response
+        try {
+          const res = await axios.get(
+            `http://localhost:5001/${process.env.REACT_APP_DEV_PROJECT_ID}/us-central1/getToken`
+          );
+          token = res.data.value;
+        } catch (err) {}
+
+        if (!token) {
+          setErrorMsg("Uh oh, could not get auth token for TVDB.");
+        } else {
+          localStorage.setItem("auth-token", token);
+          setToken(token);
+        }
+      }
+    };
+    fetchData();
+  }, []);
 
   //Show the snackbar when there's an error message available
   useEffect(() => {
@@ -71,7 +104,17 @@ const ListMaker: React.FC = () => {
     if (searchValue.length >= 3) {
       setLoading(true);
 
-      if (searchType === SearchType.Anime) {
+      if (searchType === SearchType.TVshow) {
+        searchSeries(token, searchValue).then(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            setErrorMsg("Could not search, TVDB's API is down");
+            setLoading(false);
+          }
+        );
+      } else if (searchType === SearchType.Anime) {
         searchAnime(searchValue, 10).then(
           (res) => {
             setSearchResult(res.data.results);
@@ -100,7 +143,6 @@ const ListMaker: React.FC = () => {
   //Handle when a user clicks a search result entry
   const handleOnSelect = (malId: number): void => {
     setLoading(true);
-
     if (searchType === SearchType.Anime) {
       getAnimeCharactersStaff(malId)
         .then((res) => {
@@ -145,7 +187,6 @@ const ListMaker: React.FC = () => {
 
   return (
     <div className="pageRoot">
-      {/* <h2>Tierlist Maker</h2> */}
       <SearchBar
         onSearch={handleSearch}
         className={classes.searchBar}

@@ -23,3 +23,5 @@ Create a tierlist for your favourite tv shows, movies, anime or manga. More item
 - "Fork" a tierlist
 - Use a state management library like Redux or MobX (if needed)
 - Progressive Web App?
+- Automated testing? (Cypress?)
+- Use CI + CD?

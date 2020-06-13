@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-//import * as logo from './logo.svg';
 import "./App.scss";
-//const logo = require("./logo.svg") as string;
 import ListMaker from "./pages/ListMaker";
 import Header from "./components/Header";
 import { createMuiTheme } from "@material-ui/core/styles";
