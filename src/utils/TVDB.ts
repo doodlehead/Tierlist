@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from "axios";
 
 //URL used for loading images
 export const TVDBUrl = "https://thetvdb.com";
+export const TVDBImgUrl = "https://artworks.thetvdb.com/banners/";
 
 //For local testing
 const proxyBaseUrl = `http://localhost:5001/${process.env.REACT_APP_DEV_PROJECT_ID}/us-central1/proxy`;
@@ -20,10 +21,28 @@ export interface SeriesResult {
   seriesName: string;
 }
 
+export interface SeriesCharacter {
+  id: number;
+  image: string;
+  imageAdded: string; //Date
+  imageAuthor: number;
+  lastUpdated: string; //Date
+  name: string;
+  role: string;
+  seriesId: number;
+  sortOrder: number;
+}
+
 export const searchSeries = (
   query: string
 ): Promise<AxiosResponse<{ data: SeriesResult[] }>> => {
   return axios.get(
     `${proxyBaseUrl}/search/series?name=${encodeURIComponent(query)}`
   );
+};
+
+export const getSeriesCharacters = (
+  id: number
+): Promise<AxiosResponse<{ data: SeriesCharacter[] }>> => {
+  return axios.get(`${proxyBaseUrl}/series/${id}/actors`);
 };

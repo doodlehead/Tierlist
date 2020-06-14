@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { DragItem } from "./common";
 
 /*
  * Helper methods that will call Jikan's HTTP API. I need to make my own jikan-client one day...
@@ -50,11 +51,15 @@ export interface AnimeCharacterData {
   mal_id: number;
   name: string;
   role: CharacterRole;
-  voice_actors: any[];
+  voice_actors: VoiceActorData[];
 }
 
-export interface DragItem {
-  id: number;
+export interface VoiceActorData {
+  image_url: string;
+  language: string;
+  mal_id: number;
+  name: string;
+  url: string;
 }
 
 export interface DragAnimeCharItem extends AnimeCharacterData, DragItem {}
@@ -99,7 +104,9 @@ export const searchManga = (
  * Gets an anime's staff and character list.
  * @param malId The anime's id to get the info for
  */
-export const getAnimeCharactersStaff = (malId: number) => {
+export const getAnimeCharactersStaff = (
+  malId: number
+): Promise<AxiosResponse<{ characters: AnimeCharacterData[] }>> => {
   return axios.get(`${baseUrl}/anime/${malId}/characters_staff`);
 };
 

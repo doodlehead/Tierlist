@@ -3,6 +3,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { ReactSortable } from "react-sortablejs";
 import { DragAnimeCharItem } from "../../utils/Jikan";
 import CharacterTile from "./CharacterTile";
+import { CharacterItem } from "../../utils/common";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,17 +35,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface TierProps {
+interface Props {
   name: string;
   group: string;
-  listItems: DragAnimeCharItem[];
+  listItems: CharacterItem[];
   labelColour?: string;
   index: number;
-  onTierChange: (list: DragAnimeCharItem[], index: number) => void;
+  onTierChange: (list: CharacterItem[], index: number) => void;
 }
 
 //Represents a tier in a tierlist. Example: "A-tier"
-const Tier: FC<TierProps> = ({
+const Tier: FC<Props> = ({
   name,
   group,
   listItems,
@@ -53,7 +54,7 @@ const Tier: FC<TierProps> = ({
   onTierChange,
 }): JSX.Element => {
   const classes = useStyles();
-  const [list, setList] = useState<DragAnimeCharItem[]>(listItems || []);
+  const [list, setList] = useState<CharacterItem[]>(listItems || []);
 
   useEffect(() => {
     onTierChange(list, index);
@@ -74,7 +75,7 @@ const Tier: FC<TierProps> = ({
         group={group}
       >
         {list.map((char) => (
-          <CharacterTile char={char} key={char.mal_id} />
+          <CharacterTile char={char} key={char.id} />
         ))}
       </ReactSortable>
     </div>

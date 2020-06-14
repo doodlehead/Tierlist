@@ -1,21 +1,26 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./ListMaker.scss";
 import SearchBar from "../components/SearchBar";
-import SearchResults, { ResultItem } from "../components/SearchResults";
+import SearchResults from "../components/SearchResults";
 import {
   searchAnime,
   searchManga,
   getAnimeCharactersStaff,
-  AnimeCharacterData,
   getMangaCharacters,
 } from "../utils/Jikan";
-import { searchSeries, TVDBUrl } from "../utils/TVDB";
+import {
+  searchSeries,
+  TVDBUrl,
+  getSeriesCharacters,
+  TVDBImgUrl,
+} from "../utils/TVDB";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
 import { SearchType } from "../components/SearchBar";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+import { CharacterItem, ResultItem } from "../utils/common";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
 //import axios from "axios";
 
@@ -46,8 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const ListMaker: React.FC = () => {
   const [searchResult, setSearchResult] = useState<ResultItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [malId, setMalId] = useState<number>();
-  const [characterData, setCharacterData] = useState<AnimeCharacterData[]>([]);
+  const [mediaId, setMediaId] = useState<number>();
+  const [characterData, setCharacterData] = useState<CharacterItem[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
@@ -133,18 +138,39 @@ const ListMaker: React.FC = () => {
   };
 
   //Handle when a user clicks a search result entry
-  const handleOnSelect = (malId: number): void => {
+  const handleOnSelect = (id: number): void => {
     setLoading(true);
-    if (searchType === SearchType.Anime) {
-      getAnimeCharactersStaff(malId)
+    if (searchType === SearchType.TVshow) {
+      getSeriesCharacters(id).then((res) => {
+        console.log(res);
+        setMediaId(id);
+        setCharacterData(
+          res.data.data.map((elem) => ({
+            id: elem.id,
+            name: elem.role,
+            actor: elem.name,
+            imageUrl: `${TVDBImgUrl}${elem.image}`,
+          }))
+        );
+      });
+      setLoading(false);
+    } else if (searchType === SearchType.Anime) {
+      getAnimeCharactersStaff(id)
         .then((res) => {
+          console.log(res);
           if (!res || res.data.characters.length === 0) {
             setErrorMsg(
               "Uh oh, looks like that Anime entry has no characters."
             );
           } else {
-            setMalId(malId);
-            setCharacterData(res.data.characters);
+            setMediaId(id);
+            setCharacterData(
+              res.data.characters.map((elem) => ({
+                ...elem,
+                id: elem.mal_id,
+                imageUrl: elem.image_url,
+              }))
+            );
           }
           setLoading(false);
         })
@@ -153,14 +179,14 @@ const ListMaker: React.FC = () => {
           setLoading(false);
         });
     } else if (searchType === SearchType.Manga) {
-      getMangaCharacters(malId)
+      getMangaCharacters(id)
         .then((res) => {
           if (!res || res.data.characters.length === 0) {
             setErrorMsg(
               "Uh oh, looks like that Manga entry has no characters."
             );
           } else {
-            setMalId(malId);
+            setMediaId(id);
             setCharacterData(res.data.characters);
           }
           setLoading(false);
@@ -199,8 +225,8 @@ const ListMaker: React.FC = () => {
       {isLoading && (
         <CircularProgress size={150} className={classes.loadingCircle} />
       )}
-      {characterData.length > 0 && malId && (
-        <TierList malId={malId} characterData={characterData} />
+      {characterData.length > 0 && mediaId && (
+        <TierList malId={mediaId} characterData={characterData} />
       )}
 
       <Snackbar

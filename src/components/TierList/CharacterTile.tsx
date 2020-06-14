@@ -1,6 +1,7 @@
 import { AnimeCharacterData } from "../../utils/Jikan";
 import React, { FC, useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { CharacterItem } from "../../utils/common";
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /* eslint-enable @typescript-eslint/camelcase */
 
 interface CharacterTileProps {
-  char: AnimeCharacterData;
+  char: CharacterItem;
 }
 
 //Tile that represents a character.
@@ -49,13 +50,13 @@ const CharacterTile: FC<CharacterTileProps> = ({ char }): JSX.Element => {
   const classes = useStyles();
 
   return (
-    <div className={classes.characterTile} key={char.mal_id}>
+    <div className={classes.characterTile} key={char.id}>
       <div className={classes.characterTile__name} title={char.name}>
         {char.name}
       </div>
       <img
         alt={char.name}
-        src={char.image_url}
+        src={char.imageUrl}
         className={classes.characterTile__image}
       />
     </div>

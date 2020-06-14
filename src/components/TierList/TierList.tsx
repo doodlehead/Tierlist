@@ -12,19 +12,11 @@ import { saveAs } from "file-saver";
 import SaveIcon from "@material-ui/icons/Save";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import MediaQuery from "react-responsive";
-
-//Is 100 too big?
-//const IMAGE_SIZE = 100;
+import { CharacterItem, DragItem } from "../../utils/common";
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    // ":root": {
-    //   "--imageSize": "50px",
-    //   "@media only screen and (min-width: 768px)": {
-    //     "--imageSize": "100px",
-    //   },
-    // },
     root: {
       padding: 10,
       backgroundColor: "var(--dark-grey)",
@@ -48,20 +40,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 /* eslint-enable @typescript-eslint/camelcase */
 
-interface TierListProps {
+interface Props {
   malId: number;
-  characterData: AnimeCharacterData[];
+  characterData: CharacterItem[];
 }
 
 interface TierData {
-  sorted: DragAnimeCharItem[][];
-  unsorted: DragAnimeCharItem[];
+  sorted: CharacterItem[][];
+  unsorted: CharacterItem[];
 }
 
 const store = window.localStorage;
+
+/**
+ * Load save data from localStorage if it exists.
+ * @param malId - the anime/manga's ID
+ * @param characterData - character data
+ */
 const getSaveData = (
   malId: number,
-  characterData: DragAnimeCharItem[]
+  characterData: CharacterItem[]
 ): TierData => {
   const saveData = store.getItem(`${malId}`);
   if (saveData) {
@@ -74,22 +72,12 @@ const getSaveData = (
   }
 };
 
-const TierList: FC<TierListProps> = ({ malId, characterData }): JSX.Element => {
+const TierList: FC<Props> = ({ malId, characterData }): JSX.Element => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
-  //const [tierRefs, setTierRefs] = useState<Node[]>([]);
-  const tierData = useRef<TierData>(
-    getSaveData(
-      malId,
-      characterData.map((char) => {
-        return { id: char.mal_id, ...char } as DragAnimeCharItem;
-      })
-    )
-  );
+  const tierData = useRef<TierData>(getSaveData(malId, characterData));
 
-  const [list, setList] = useState<DragAnimeCharItem[]>(
-    tierData.current.unsorted
-  );
+  const [list, setList] = useState<CharacterItem[]>(tierData.current.unsorted);
 
   //Handle "download image"
   const handleExport = (): void => {
@@ -112,7 +100,7 @@ const TierList: FC<TierListProps> = ({ malId, characterData }): JSX.Element => {
   };
 
   //Propogate state upwards from Tier
-  const handleTierChange = (list: DragAnimeCharItem[], index: number): void => {
+  const handleTierChange = (list: CharacterItem[], index: number): void => {
     tierData.current.sorted[index] = list;
   };
 
@@ -156,7 +144,7 @@ const TierList: FC<TierListProps> = ({ malId, characterData }): JSX.Element => {
           className={classes.unrankedList}
         >
           {list.map((char) => (
-            <CharacterTile char={char} key={char.mal_id} />
+            <CharacterTile char={char} key={char.id} />
           ))}
         </ReactSortable>
       </div>

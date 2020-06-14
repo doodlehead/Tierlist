@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { AnimeSearchResult, Rating } from "../utils/Jikan";
 import { SearchType } from "./SearchBar";
+import { ResultItem } from "../utils/common";
 
 const mobileItemWidth = 100;
 /* eslint-disable @typescript-eslint/camelcase */
@@ -64,12 +65,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 /* eslint-enable @typescript-eslint/camelcase */
-
-export interface ResultItem {
-  id: number;
-  label: string;
-  imageUrl: string;
-}
 
 interface Props {
   data: ResultItem[];
