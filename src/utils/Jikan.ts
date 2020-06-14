@@ -17,20 +17,32 @@ export enum Rating {
   r = "R+",
   rx = "Rx",
 }
-export interface AnimeSearchResult {
-  mal_id: number;
-  url: string;
+
+//Anime and Manga search result shared values
+interface MALSearchResult {
+  end_date: string | null;
   image_url: string;
+  mal_id: number;
+  members: number;
   title: string;
-  airing: boolean;
-  synopsis: string;
-  type: string;
-  episodes: number;
+  url: string;
   score: number;
   start_date: string;
-  end_date: string;
-  members: number;
+  synopsis: string;
+}
+
+export interface AnimeSearchResult extends MALSearchResult {
+  airing: boolean;
+  episodes: number;
+  type: string;
   rated: Rating;
+}
+
+export interface MangaSearchResult extends MALSearchResult {
+  chapters: number;
+  publishing: boolean;
+  type: string;
+  volumes: number;
 }
 
 export interface AnimeCharacterData {
@@ -54,7 +66,10 @@ const baseUrl = "https://api.jikan.moe/v3";
  * @param searchQuery The search term to use
  * @param limit Max results returned
  */
-export const searchAnime = (searchQuery: string, limit?: number) => {
+export const searchAnime = (
+  searchQuery: string,
+  limit?: number
+): Promise<AxiosResponse<{ results: AnimeSearchResult[] }>> => {
   return axios.get(`${baseUrl}/search/anime`, {
     params: {
       q: searchQuery,
@@ -68,7 +83,10 @@ export const searchAnime = (searchQuery: string, limit?: number) => {
  * @param searchQuery The search term to use
  * @param limit Max results returned
  */
-export const searchManga = (searchQuery: string, limit?: number) => {
+export const searchManga = (
+  searchQuery: string,
+  limit?: number
+): Promise<AxiosResponse<{ results: MangaSearchResult[] }>> => {
   return axios.get(`${baseUrl}/search/manga`, {
     params: {
       q: searchQuery,

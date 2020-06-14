@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { AnimeSearchResult, Rating } from "../utils/Jikan";
+import { SearchType } from "./SearchBar";
 
 const mobileItemWidth = 100;
 /* eslint-disable @typescript-eslint/camelcase */
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       gridGap: "5px",
       gridTemplateColumns: `repeat(auto-fill, minmax(${mobileItemWidth}px, 1fr))`,
     },
-    animePanel: {
+    panel: {
       borderRadius: 3,
       backgroundColor: "var(--darker-grey)",
       "&:hover": {
@@ -19,13 +20,13 @@ const useStyles = makeStyles((theme: Theme) =>
         cursor: "pointer",
       },
     },
-    animePanel__title: {
+    panel__title: {
       fontSize: 14,
       fontWeight: 500,
       display: "block",
       padding: "8px",
     },
-    animePanel__image: {
+    panel__image: {
       maxWidth: mobileItemWidth,
       height: "auto",
     },
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
         gridGap: "20px",
         gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
       },
-      animePanel: {
+      panel: {
         borderRadius: 3,
         backgroundColor: "var(--darker-grey)",
         "&:hover": {
@@ -46,13 +47,13 @@ const useStyles = makeStyles((theme: Theme) =>
           cursor: "pointer",
         },
       },
-      animePanel__title: {
+      panel__title: {
         fontSize: 18,
         fontWeight: 500,
         display: "block",
         padding: "8px",
       },
-      animePanel__image: {
+      panel__image: {
         maxWidth: 200,
         height: "auto",
       },
@@ -64,49 +65,48 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 /* eslint-enable @typescript-eslint/camelcase */
 
-interface SearchResultProps {
-  data: AnimeSearchResult[];
+export interface ResultItem {
+  id: number;
+  label: string;
+  imageUrl: string;
+}
+
+interface Props {
+  data: ResultItem[];
   loading: boolean;
-  onSelect: OnSelectFunction;
+  onSelect: (malId: number) => void;
   className?: string;
 }
 
-interface OnSelectFunction {
-  (malId: number): void;
-}
+// interface OnSelectFunction {
+//   (malId: number): void;
+// }
 
-const SearchResults: FC<SearchResultProps> = ({
-  data,
-  loading,
-  onSelect,
-  className,
-}) => {
+const SearchResults: FC<Props> = ({ data, loading, onSelect, className }) => {
   const classes = useStyles();
-  const filteredData = data.filter((elem) => {
-    //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
+  //TODO: move to outside parent?
+  // const filteredData = data.filter((elem) => {
+  //   //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
 
-    //console.log(`${elem.title} ${elem.rated}`);
+  //   return (
+  //     Object.values(Rating).indexOf(elem.rated) <=
+  //     Object.values(Rating).indexOf(Rating.r)
+  //   );
+  // });
 
-    return (
-      Object.values(Rating).indexOf(elem.rated) <=
-      Object.values(Rating).indexOf(Rating.r)
-    );
-  });
-
-  const renderAnimePanel = (anime: AnimeSearchResult): JSX.Element => {
+  //Anime/Manga panel
+  const renderItem = (item: ResultItem): JSX.Element => {
     return (
       <div
-        className={classes.animePanel}
-        key={anime.mal_id}
-        onClick={(): void => {
-          onSelect(anime.mal_id);
-        }}
+        className={classes.panel}
+        key={item.id}
+        onClick={() => onSelect(item.id)}
       >
-        <div className={classes.animePanel__title}>{anime.title}</div>
+        <div className={classes.panel__title}>{item.label}</div>
         <img
-          alt={anime.title}
-          src={anime.image_url}
-          className={classes.animePanel__image}
+          alt={item.label}
+          src={item.imageUrl}
+          className={classes.panel__image}
         />
       </div>
     );
@@ -118,7 +118,7 @@ const SearchResults: FC<SearchResultProps> = ({
     return (
       <div className={className}>
         <div className={classes.root}>
-          {!loading && filteredData.map((res) => renderAnimePanel(res))}
+          {!loading && data.map((elem) => renderItem(elem))}
         </div>
       </div>
     );

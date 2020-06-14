@@ -38,7 +38,7 @@ const Homepage = (): JSX.Element => {
 
   const renderCard = (title: string, body: JSX.Element): JSX.Element => {
     return (
-      <Card className={classes.card}>
+      <Card className={classes.card} key={title}>
         <CardContent>
           <Typography variant="h4" className={classes.title}>
             {title}

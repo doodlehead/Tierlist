@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./ListMaker.scss";
 import SearchBar from "../components/SearchBar";
-import SearchResults from "../components/SearchResults";
+import SearchResults, { ResultItem } from "../components/SearchResults";
 import {
   searchAnime,
   searchManga,
   getAnimeCharactersStaff,
-  AnimeSearchResult,
   AnimeCharacterData,
   getMangaCharacters,
 } from "../utils/Jikan";
-import { searchSeries } from "../utils/TVDB";
+import { searchSeries, TVDBUrl } from "../utils/TVDB";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
@@ -18,7 +17,7 @@ import { SearchType } from "../components/SearchBar";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
-import axios from "axios";
+//import axios from "axios";
 
 //TODO: validate inputs
 
@@ -45,44 +44,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 //TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
 const ListMaker: React.FC = () => {
-  const [searchResult, setSearchResult] = useState<AnimeSearchResult[]>([]);
+  const [searchResult, setSearchResult] = useState<ResultItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [malId, setMalId] = useState<number>();
   const [characterData, setCharacterData] = useState<AnimeCharacterData[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
-  const [token, setToken] = useState<string>(
-    localStorage.getItem("auth-token") || ""
-  );
+  //const [token, setToken] = useState<string>(localStorage.getItem("auth-token") || "");
   //const firebase = useContext(FirebaseContext);
 
   const classes = useStyles();
-
-  //Run on first render
-  useEffect(() => {
-    const fetchData = async () => {
-      //TODO: this is probably bad practice. Store into a Context? Or something reactive?
-      let token = localStorage.getItem("auth-token");
-      if (!token) {
-        //TODO: move this to util file and decide on a schema for the response
-        try {
-          const res = await axios.get(
-            `http://localhost:5001/${process.env.REACT_APP_DEV_PROJECT_ID}/us-central1/getToken`
-          );
-          token = res.data.value;
-        } catch (err) {}
-
-        if (!token) {
-          setErrorMsg("Uh oh, could not get auth token for TVDB.");
-        } else {
-          localStorage.setItem("auth-token", token);
-          setToken(token);
-        }
-      }
-    };
-    fetchData();
-  }, []);
 
   //Show the snackbar when there's an error message available
   useEffect(() => {
@@ -105,9 +77,17 @@ const ListMaker: React.FC = () => {
       setLoading(true);
 
       if (searchType === SearchType.TVshow) {
-        searchSeries(token, searchValue).then(
+        searchSeries(searchValue).then(
           (res) => {
             console.log(res);
+            setSearchResult(
+              res.data.data.map((elem) => ({
+                id: elem.id,
+                label: elem.seriesName,
+                imageUrl: `${TVDBUrl}${elem.image}`,
+              }))
+            );
+            setLoading(false);
           },
           (err) => {
             setErrorMsg("Could not search, TVDB's API is down");
@@ -117,7 +97,13 @@ const ListMaker: React.FC = () => {
       } else if (searchType === SearchType.Anime) {
         searchAnime(searchValue, 10).then(
           (res) => {
-            setSearchResult(res.data.results);
+            setSearchResult(
+              res.data.results.map((elem) => ({
+                id: elem.mal_id,
+                label: elem.title,
+                imageUrl: elem.image_url,
+              }))
+            );
             setLoading(false);
           },
           (err) => {
@@ -128,7 +114,13 @@ const ListMaker: React.FC = () => {
       } else if (searchType === SearchType.Manga) {
         searchManga(searchValue, 10).then(
           (res) => {
-            setSearchResult(res.data.results);
+            setSearchResult(
+              res.data.results.map((elem) => ({
+                id: elem.mal_id,
+                label: elem.title,
+                imageUrl: elem.image_url,
+              }))
+            );
             setLoading(false);
           },
           (err) => {
