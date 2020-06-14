@@ -16,12 +16,21 @@ Create a tierlist for your favourite tv shows, movies, anime or manga. More item
 - Anime and manga data fetched from [Jikan's API](https://jikan.moe/)
 - Static front-end served using Github Pages
 
+## TODO
+
+- Saving to localStorage needs to depend on a new unique id: `mediaType + id`
+- Re-implement/refactor filtering by rating (`SearchResults`)
+- Refactor `ListMaker` because it's getting big
+- Make sure the manga workflow works and type the API responses
+- Manage/delete old localStorage data? Have a delete button?
+- Paginate search results for TVDB API requests
+- Have a "show more" option for Jikan API requests
+
 ## Future changes
 
-- Integrate Firebase
 - Custom images upload
 - "Fork" a tierlist
 - Use a state management library like Redux or MobX (if needed)
 - Progressive Web App?
-- Automated testing? (Cypress?)
+- Automated testing? (Cypress? Jest?)
 - Use CI + CD?
