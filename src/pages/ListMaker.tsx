@@ -22,7 +22,6 @@ import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { CharacterItem, ResultItem } from "../utils/common";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
-//import axios from "axios";
 
 //TODO: validate inputs
 
@@ -142,7 +141,7 @@ const ListMaker: React.FC = () => {
     setLoading(true);
     if (searchType === SearchType.TVshow) {
       getSeriesCharacters(id).then((res) => {
-        console.log(res);
+        //console.log(res);
         setMediaId(id);
         setCharacterData(
           res.data.data.map((elem) => ({
@@ -157,7 +156,7 @@ const ListMaker: React.FC = () => {
     } else if (searchType === SearchType.Anime) {
       getAnimeCharactersStaff(id)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           if (!res || res.data.characters.length === 0) {
             setErrorMsg(
               "Uh oh, looks like that Anime entry has no characters."
@@ -181,13 +180,20 @@ const ListMaker: React.FC = () => {
     } else if (searchType === SearchType.Manga) {
       getMangaCharacters(id)
         .then((res) => {
+          console.log(res);
           if (!res || res.data.characters.length === 0) {
             setErrorMsg(
               "Uh oh, looks like that Manga entry has no characters."
             );
           } else {
             setMediaId(id);
-            setCharacterData(res.data.characters);
+            setCharacterData(
+              res.data.characters.map((elem) => ({
+                ...elem,
+                id: elem.mal_id,
+                imageUrl: elem.image_url,
+              }))
+            );
           }
           setLoading(false);
         })

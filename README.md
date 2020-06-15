@@ -1,14 +1,17 @@
 # Tierlist creator
 
-## Description
-
 Create a tierlist for your favourite tv shows, movies, anime or manga. More item types may be added if I can find public APIs for them.
 
 [https://doodlehead.github.io/Tierlist/](https://doodlehead.github.io/Tierlist/)
 
+## What's a tierlist?
+
+Tierlists are just charts where the items are sorted into tiers based on how "good" that item is. Originally used rank video game characters' viability in a competitive setting, its usage has spread to pretty much anything: fast food chains, candy, and of course fictional characters.
+
 ## Implementation details
 
 - Built using Typescript and React
+- Firebase backend, check it out [here](https://github.com/doodlehead/firebase-tierlist)
 - The majority of components are functional using React Hooks
 - CSS styling is written with mobile-first in mind
 - Component library: [material-ui](https://material-ui.com/)
@@ -21,13 +24,17 @@ Create a tierlist for your favourite tv shows, movies, anime or manga. More item
 - Saving to localStorage needs to depend on a new unique id: `mediaType + id`
 - Re-implement/refactor filtering by rating (`SearchResults`)
 - Refactor `ListMaker` because it's getting big
-- Make sure the manga workflow works and type the API responses
 - Manage/delete old localStorage data? Have a delete button?
 - Paginate search results for TVDB API requests
 - Have a "show more" option for Jikan API requests
+- Take a look at some good open-source Typescript React projects for inspiration on proper application folder structure and organization
+- How to handle the refresh use-case when deployed to Github Pages?
 
 ## Future changes
 
+- Customizable tiers, add/remove and rename
+- Customizable appearance of the list
+- Fast tier assignment using right-click
 - Custom images upload
 - "Fork" a tierlist
 - Use a state management library like Redux or MobX (if needed)

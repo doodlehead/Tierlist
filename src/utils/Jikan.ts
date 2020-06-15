@@ -32,6 +32,13 @@ interface MALSearchResult {
   synopsis: string;
 }
 
+export interface MALCharacterData {
+  image_url: string;
+  mal_id: number;
+  name: string;
+  role: CharacterRole;
+}
+
 export interface AnimeSearchResult extends MALSearchResult {
   airing: boolean;
   episodes: number;
@@ -46,12 +53,12 @@ export interface MangaSearchResult extends MALSearchResult {
   volumes: number;
 }
 
-export interface AnimeCharacterData {
-  image_url: string;
-  mal_id: number;
-  name: string;
-  role: CharacterRole;
+export interface AnimeCharacterData extends MALCharacterData {
   voice_actors: VoiceActorData[];
+}
+
+export interface MangaCharacterData extends MALCharacterData {
+  url: string;
 }
 
 export interface VoiceActorData {
@@ -114,6 +121,8 @@ export const getAnimeCharactersStaff = (
  * Gets a manga's character list.
  * @param malId The manga's id to get the info for
  */
-export const getMangaCharacters = (malId: number) => {
+export const getMangaCharacters = (
+  malId: number
+): Promise<AxiosResponse<{ characters: MangaCharacterData[] }>> => {
   return axios.get(`${baseUrl}/manga/${malId}/characters`);
 };
