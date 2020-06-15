@@ -21,10 +21,13 @@ const darkTheme = createMuiTheme({
 const App = (): React.ReactElement => {
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  const [message, setMessage] = useState<SnackbarMessage | null>();
+  const [message, setMessage] = useState<SnackbarMessage>({
+    text: "",
+    severity: "success",
+  });
 
   const handleCloseMessage = (): void => {
-    setMessage(null);
+    setMessage({ text: "", severity: message.severity });
   };
 
   const handleSnackbarClose = (event: SyntheticEvent, reason: string): void => {
