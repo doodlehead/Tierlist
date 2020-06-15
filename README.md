@@ -8,6 +8,12 @@ Create a tierlist for your favourite tv shows, movies, anime or manga. More item
 
 Tierlists are just charts where the items are sorted into tiers based on how "good" that item is. Originally used rank video game characters' viability in a competitive setting, its usage has spread to pretty much anything: fast food chains, candy, and of course fictional characters.
 
+For example, a quick Game of Thrones tierlist I made with my app. S-tier meaning I love the character, C-tier being neutral feelings, and F-tier being hated.
+
+![Game of Thrones tierlist example](images/README/GameOfThronesTierlistExample.png)
+
+<small>P.S. the chart above only considers seasons 1-7. :wink: </small>
+
 ## Implementation details
 
 - Built using Typescript and React
@@ -21,7 +27,6 @@ Tierlists are just charts where the items are sorted into tiers based on how "go
 
 ## TODO
 
-- Saving to localStorage needs to depend on a new unique id: `mediaType + id`
 - Re-implement/refactor filtering by rating (`SearchResults`)
 - Refactor `ListMaker` because it's getting big
 - Manage/delete old localStorage data? Have a delete button?

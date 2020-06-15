@@ -2,6 +2,13 @@
  * File for shared util methods and types. Not sure if this is the best project architecture...
  */
 
+export enum SearchType {
+  TVshow = "TVshow",
+  //Movie = "Movie",
+  Anime = "Anime",
+  Manga = "Manga",
+}
+
 export interface DragItem {
   id: number;
 }

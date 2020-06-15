@@ -10,6 +10,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
 import Select from "@material-ui/core/Select";
 import { Menu, MenuItem, FormControl } from "@material-ui/core";
+import { SearchType } from "../utils/common";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,13 +76,6 @@ interface OnChangeSearchType {
   (event: React.ChangeEvent<{ value: SearchType }>): void;
 }
 
-export enum SearchType {
-  TVshow = "TVshow",
-  Movie = "Movie",
-  Anime = "Anime",
-  Manga = "Manga",
-}
-
 const SearchBar: FC<SearchProps> = ({
   onSearch,
   onChangeSearchType,
@@ -113,7 +107,7 @@ const SearchBar: FC<SearchProps> = ({
             className={classes.select}
           >
             <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
-            <MenuItem value={SearchType.Movie}>Movie</MenuItem>
+            {/* <MenuItem value={SearchType.Movie}>Movie</MenuItem> */}
             <MenuItem value={SearchType.Anime}>Anime</MenuItem>
             <MenuItem value={SearchType.Manga}>Manga</MenuItem>
           </Select>

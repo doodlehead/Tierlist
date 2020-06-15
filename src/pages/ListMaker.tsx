@@ -17,10 +17,9 @@ import {
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
-import { SearchType } from "../components/SearchBar";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import { CharacterItem, ResultItem } from "../utils/common";
+import { CharacterItem, ResultItem, SearchType } from "../utils/common";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
 
 //TODO: validate inputs
@@ -45,6 +44,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
+const mediaTypePrefix = {
+  [SearchType.TVshow]: "tv-",
+  [SearchType.Anime]: "anime-",
+  [SearchType.Manga]: "manga",
+};
 
 //TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
 const ListMaker: React.FC = () => {
@@ -232,7 +237,10 @@ const ListMaker: React.FC = () => {
         <CircularProgress size={150} className={classes.loadingCircle} />
       )}
       {characterData.length > 0 && mediaId && (
-        <TierList malId={mediaId} characterData={characterData} />
+        <TierList
+          mediaId={`${mediaTypePrefix[searchType]}${mediaId}`}
+          characterData={characterData}
+        />
       )}
 
       <Snackbar

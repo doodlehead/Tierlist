@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /* eslint-enable @typescript-eslint/camelcase */
 
 interface Props {
-  malId: number;
+  mediaId: string | number;
   characterData: CharacterItem[];
 }
 
@@ -54,14 +54,14 @@ const store = window.localStorage;
 
 /**
  * Load save data from localStorage if it exists.
- * @param malId - the anime/manga's ID
+ * @param mediaId - the series/anime/manga's ID with the media's prefix
  * @param characterData - character data
  */
 const getSaveData = (
-  malId: number,
+  mediaId: string | number,
   characterData: CharacterItem[]
 ): TierData => {
-  const saveData = store.getItem(`${malId}`);
+  const saveData = store.getItem(`${mediaId}`);
   if (saveData) {
     return JSON.parse(saveData) as TierData;
   } else {
@@ -72,10 +72,10 @@ const getSaveData = (
   }
 };
 
-const TierList: FC<Props> = ({ malId, characterData }): JSX.Element => {
+const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
-  const tierData = useRef<TierData>(getSaveData(malId, characterData));
+  const tierData = useRef<TierData>(getSaveData(mediaId, characterData));
 
   const [list, setList] = useState<CharacterItem[]>(tierData.current.unsorted);
 
@@ -85,9 +85,9 @@ const TierList: FC<Props> = ({ malId, characterData }): JSX.Element => {
       domtoimage
         .toBlob(tierlistEl.current)
         .then((blob: Blob) => {
-          saveAs(blob, `tierlist-${malId}.png`);
+          saveAs(blob, `tierlist-${mediaId}.png`);
         })
-        .catch((error: any) => {
+        .catch((error) => {
           console.error("Could not generate image", error);
         });
     }
@@ -96,7 +96,7 @@ const TierList: FC<Props> = ({ malId, characterData }): JSX.Element => {
   //Handle save to browser localstorage
   const handleSave = (): void => {
     tierData.current.unsorted = list; //Update the unsorted list
-    store.setItem(`${malId}`, JSON.stringify(tierData.current));
+    store.setItem(`${mediaId}`, JSON.stringify(tierData.current));
   };
 
   //Propogate state upwards from Tier

@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { AnimeSearchResult, Rating } from "../utils/Jikan";
-import { SearchType } from "./SearchBar";
+//import { AnimeSearchResult, Rating } from "../utils/Jikan";
 import { ResultItem } from "../utils/common";
 
 const mobileItemWidth = 100;
