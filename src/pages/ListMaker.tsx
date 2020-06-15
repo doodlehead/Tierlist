@@ -18,8 +18,9 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
 import { Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/lab/Alert";
 import { CharacterItem, ResultItem, SearchType } from "../utils/common";
+import AppContext from "../contexts/AppContext";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
 
 //TODO: validate inputs
@@ -57,20 +58,12 @@ const ListMaker: React.FC = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [mediaId, setMediaId] = useState<number>();
   const [characterData, setCharacterData] = useState<CharacterItem[]>([]);
-  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string>("");
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
   //const [token, setToken] = useState<string>(localStorage.getItem("auth-token") || "");
   //const firebase = useContext(FirebaseContext);
+  const appContext = useContext(AppContext);
 
   const classes = useStyles();
-
-  //Show the snackbar when there's an error message available
-  useEffect(() => {
-    if (errorMsg) {
-      setShowSnackbar(true);
-    }
-  }, [errorMsg]);
 
   //Handle a search submit
   const handleSearch = (event: React.FormEvent<HTMLDivElement>): void => {
@@ -99,7 +92,10 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            setErrorMsg("Could not search, TVDB's API is down");
+            appContext.setMessage?.({
+              text: "Could not search, TVDB's API is down",
+              severity: "error",
+            });
             setLoading(false);
           }
         );
@@ -116,7 +112,10 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            setErrorMsg("Could not search, either MAL or Jikan's API is down");
+            appContext.setMessage?.({
+              text: "Could not search, either MAL or Jikan's API is down",
+              severity: "error",
+            });
             setLoading(false);
           }
         );
@@ -133,7 +132,10 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            setErrorMsg("Could not search, either MAL or Jikan's API is down");
+            appContext.setMessage?.({
+              text: "Could not search, either MAL or Jikan's API is down",
+              severity: "error",
+            });
             setLoading(false);
           }
         );
@@ -163,9 +165,10 @@ const ListMaker: React.FC = () => {
         .then((res) => {
           //console.log(res);
           if (!res || res.data.characters.length === 0) {
-            setErrorMsg(
-              "Uh oh, looks like that Anime entry has no characters."
-            );
+            appContext.setMessage?.({
+              text: "Uh oh, looks like that Anime entry has no characters.",
+              severity: "error",
+            });
           } else {
             setMediaId(id);
             setCharacterData(
@@ -179,7 +182,7 @@ const ListMaker: React.FC = () => {
           setLoading(false);
         })
         .catch((err) => {
-          setErrorMsg(err.response.data.message);
+          appContext.setMessage?.(err.response.data.message);
           setLoading(false);
         });
     } else if (searchType === SearchType.Manga) {
@@ -187,9 +190,10 @@ const ListMaker: React.FC = () => {
         .then((res) => {
           console.log(res);
           if (!res || res.data.characters.length === 0) {
-            setErrorMsg(
-              "Uh oh, looks like that Manga entry has no characters."
-            );
+            appContext.setMessage?.({
+              text: "Uh oh, looks like that Manga entry has no characters.",
+              severity: "error",
+            });
           } else {
             setMediaId(id);
             setCharacterData(
@@ -203,15 +207,13 @@ const ListMaker: React.FC = () => {
           setLoading(false);
         })
         .catch((err) => {
-          setErrorMsg(err.response.data.message);
+          appContext.setMessage?.({
+            text: err.response.data.message,
+            severity: "error",
+          });
           setLoading(false);
         });
     }
-  };
-
-  const handleCloseError = (): void => {
-    setShowSnackbar(false);
-    setErrorMsg("");
   };
 
   return (
@@ -242,21 +244,6 @@ const ListMaker: React.FC = () => {
           characterData={characterData}
         />
       )}
-
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseError}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={handleCloseError}
-          severity="error"
-        >
-          {errorMsg}
-        </MuiAlert>
-      </Snackbar>
     </div>
   );
 };

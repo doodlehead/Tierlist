@@ -25,3 +25,8 @@ export interface CharacterItem extends DragItem {
   actor?: string;
   imageUrl: string;
 }
+
+export interface SnackbarMessage {
+  text: string;
+  severity: "error" | "warning" | "info" | "success";
+}

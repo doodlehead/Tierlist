@@ -1,8 +1,10 @@
 import React from "react";
+import { SnackbarMessage } from "../utils/common";
 
 type ContextProps = {
   showSidebar: boolean;
-  setShowSidebar: Function;
+  setShowSidebar: (show: boolean) => void;
+  setMessage: (msg: SnackbarMessage) => void;
 };
 
 const AppContext = React.createContext<Partial<ContextProps>>({

@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useEffect } from "react";
+import React, { FC, useState, useRef, useEffect, useContext } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { AnimeCharacterData, DragAnimeCharItem } from "../../utils/Jikan";
 import { ReactSortable } from "react-sortablejs";
@@ -13,6 +13,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import MediaQuery from "react-responsive";
 import { CharacterItem, DragItem } from "../../utils/common";
+import AppContext from "../../contexts/AppContext";
 
 /* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
@@ -76,8 +77,8 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
   const tierData = useRef<TierData>(getSaveData(mediaId, characterData));
-
   const [list, setList] = useState<CharacterItem[]>(tierData.current.unsorted);
+  const appContext = useContext(AppContext);
 
   //Handle "download image"
   const handleExport = (): void => {
@@ -95,8 +96,19 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
 
   //Handle save to browser localstorage
   const handleSave = (): void => {
-    tierData.current.unsorted = list; //Update the unsorted list
-    store.setItem(`${mediaId}`, JSON.stringify(tierData.current));
+    try {
+      tierData.current.unsorted = list; //Update the unsorted list
+      store.setItem(`${mediaId}`, JSON.stringify(tierData.current));
+      appContext.setMessage?.({
+        text: "Saved successfully!",
+        severity: "success",
+      });
+    } catch (err) {
+      appContext.setMessage?.({
+        text: err.toString(),
+        severity: "error",
+      });
+    }
   };
 
   //Propogate state upwards from Tier

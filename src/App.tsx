@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import "./App.scss";
 import ListMaker from "./pages/ListMaker";
 import Header from "./components/Header";
@@ -8,6 +8,9 @@ import SideNav from "./components/SideNav";
 import AppContext from "./contexts/AppContext";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Homepage from "./pages/Homepage";
+import { Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import { SnackbarMessage } from "./utils/common";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -17,11 +20,33 @@ const darkTheme = createMuiTheme({
 
 const App = (): React.ReactElement => {
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [message, setMessage] = useState<SnackbarMessage | null>();
+
+  const handleCloseMessage = (): void => {
+    setMessage(null);
+  };
+
+  const handleSnackbarClose = (event: SyntheticEvent, reason: string): void => {
+    if (reason === "clickaway") return;
+    setShowSnackbar(false);
+  };
+
+  //Show the snackbar when there's a message available
+  useEffect(() => {
+    if (message?.text) {
+      setShowSnackbar(true);
+    } else {
+      setShowSnackbar(false);
+    }
+  }, [message]);
 
   return (
     <div id="app">
       <ThemeProvider theme={darkTheme}>
-        <AppContext.Provider value={{ showSidebar, setShowSidebar }}>
+        <AppContext.Provider
+          value={{ showSidebar, setShowSidebar, setMessage }}
+        >
           <Header />
           <div id="appContent">
             <Router>
@@ -36,6 +61,20 @@ const App = (): React.ReactElement => {
               <SideNav />
             </Router>
           </div>
+          <Snackbar
+            open={showSnackbar}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              elevation={6}
+              variant="filled"
+              onClose={handleCloseMessage}
+              severity={message?.severity}
+            >
+              {message?.text}
+            </Alert>
+          </Snackbar>
         </AppContext.Provider>
       </ThemeProvider>
     </div>
