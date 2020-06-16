@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -9,8 +9,8 @@ import {
   ListItemText,
   Divider,
 } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+//import InboxIcon from "@material-ui/icons/MoveToInbox";
+//import MailIcon from "@material-ui/icons/Mail";
 import HomeIcon from "@material-ui/icons/Home";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import AppContext from "../contexts/AppContext";
@@ -25,15 +25,11 @@ const useStyles = makeStyles({
   },
 });
 
-interface SideNavProps {
-  open: boolean;
-  setShowSidebar?: Function;
-}
-
-const SideNav: FC<SideNavProps> = ({ open, setShowSidebar }) => {
+const SideNav: FC = () => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
+  const { showSidebar, setShowSidebar } = useContext(AppContext);
 
   useEffect(() => {
     setShowSidebar?.(false);
@@ -41,12 +37,7 @@ const SideNav: FC<SideNavProps> = ({ open, setShowSidebar }) => {
 
   const renderListItems = (): JSX.Element => {
     return (
-      <div
-        className={clsx(classes.list)}
-        role="presentation"
-        //onClick={toggleDrawer(anchor, false)}
-        //onKeyDown={toggleDrawer(anchor, false)}
-      >
+      <div className={clsx(classes.list)} role="presentation">
         <List>
           <ListItem button onClick={() => history.push("/Tierlist")}>
             <ListItemIcon>
@@ -62,31 +53,19 @@ const SideNav: FC<SideNavProps> = ({ open, setShowSidebar }) => {
           </ListItem>
         </List>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
       </div>
     );
   };
 
   return (
-    <Drawer anchor={"left"} open={open} onClose={() => setShowSidebar?.(false)}>
+    <Drawer
+      anchor={"left"}
+      open={showSidebar}
+      onClose={() => setShowSidebar?.(false)}
+    >
       {renderListItems()}
     </Drawer>
   );
 };
 
-export default () => (
-  <AppContext.Consumer>
-    {({ showSidebar, setShowSidebar }) => (
-      <SideNav open={showSidebar || false} setShowSidebar={setShowSidebar} />
-    )}
-  </AppContext.Consumer>
-);
+export default SideNav;
