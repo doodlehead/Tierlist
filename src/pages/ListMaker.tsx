@@ -13,12 +13,11 @@ import {
   TVDBUrl,
   getSeriesCharacters,
   TVDBImgUrl,
+  missingActorUrl,
 } from "../utils/TVDB";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
-import { Snackbar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 import { CharacterItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
@@ -61,7 +60,7 @@ const ListMaker: React.FC = () => {
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
   //const [token, setToken] = useState<string>(localStorage.getItem("auth-token") || "");
   //const firebase = useContext(FirebaseContext);
-  const appContext = useContext(AppContext);
+  const { setMessage } = useContext(AppContext);
 
   const classes = useStyles();
 
@@ -92,7 +91,7 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            appContext.setMessage?.({
+            setMessage?.({
               text: "Could not search, TVDB's API is down",
               severity: "error",
             });
@@ -112,7 +111,7 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            appContext.setMessage?.({
+            setMessage?.({
               text: "Could not search, either MAL or Jikan's API is down",
               severity: "error",
             });
@@ -132,7 +131,7 @@ const ListMaker: React.FC = () => {
             setLoading(false);
           },
           (err) => {
-            appContext.setMessage?.({
+            setMessage?.({
               text: "Could not search, either MAL or Jikan's API is down",
               severity: "error",
             });
@@ -148,14 +147,16 @@ const ListMaker: React.FC = () => {
     setLoading(true);
     if (searchType === SearchType.TVshow) {
       getSeriesCharacters(id).then((res) => {
-        //console.log(res);
+        console.log(res);
         setMediaId(id);
         setCharacterData(
           res.data.data.map((elem) => ({
             id: elem.id,
             name: elem.role,
             actor: elem.name,
-            imageUrl: `${TVDBImgUrl}${elem.image}`,
+            imageUrl: elem.image
+              ? `${TVDBImgUrl}${elem.image}`
+              : missingActorUrl,
           }))
         );
       });
@@ -165,7 +166,7 @@ const ListMaker: React.FC = () => {
         .then((res) => {
           //console.log(res);
           if (!res || res.data.characters.length === 0) {
-            appContext.setMessage?.({
+            setMessage?.({
               text: "Uh oh, looks like that Anime entry has no characters.",
               severity: "error",
             });
@@ -182,7 +183,7 @@ const ListMaker: React.FC = () => {
           setLoading(false);
         })
         .catch((err) => {
-          appContext.setMessage?.(err.response.data.message);
+          setMessage?.(err.response.data.message);
           setLoading(false);
         });
     } else if (searchType === SearchType.Manga) {
@@ -190,7 +191,7 @@ const ListMaker: React.FC = () => {
         .then((res) => {
           console.log(res);
           if (!res || res.data.characters.length === 0) {
-            appContext.setMessage?.({
+            setMessage?.({
               text: "Uh oh, looks like that Manga entry has no characters.",
               severity: "error",
             });
@@ -207,7 +208,7 @@ const ListMaker: React.FC = () => {
           setLoading(false);
         })
         .catch((err) => {
-          appContext.setMessage?.({
+          setMessage?.({
             text: err.response.data.message,
             severity: "error",
           });

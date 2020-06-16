@@ -8,6 +8,7 @@ import axios, { AxiosResponse } from "axios";
 //URL used for loading images
 export const TVDBUrl = "https://thetvdb.com";
 export const TVDBImgUrl = "https://artworks.thetvdb.com/banners/";
+export const missingActorUrl = "https://artworks.thetvdb.com/person/actor.jpg";
 
 //For local testing
 const proxyBaseUrl = `http://localhost:5001/${process.env.REACT_APP_DEV_PROJECT_ID}/us-central1/proxy`;
