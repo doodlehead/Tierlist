@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 //import Button from "@material-ui/core/Button";
 //import TextField from "@material-ui/core/TextField";
@@ -9,8 +9,9 @@ import InputBase from "@material-ui/core/InputBase";
 //import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
 import Select from "@material-ui/core/Select";
-import { Menu, MenuItem, FormControl } from "@material-ui/core";
+import { Menu, MenuItem, FormControl, Typography } from "@material-ui/core";
 import { SearchType } from "../utils/common";
+import { getItems } from "../utils/SuggestedSearches";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,47 +60,93 @@ const useStyles = makeStyles((theme: Theme) =>
         padding: "0 12px",
       },
     },
+    suggestionsRoot: {
+      display: "flex",
+      marginTop: "12px",
+      marginLeft: "20px",
+    },
+    itemContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+      "& > p": {
+        marginLeft: "8px",
+        marginBottom: "6px",
+      },
+    },
+    suggestionItem: {
+      border: "1px solid var(--lighter-grey)",
+      fontSize: "14px",
+      padding: "2px 8px 0",
+      borderRadius: "14px",
+      cursor: "pointer",
+      whiteSpace: "nowrap",
+      "&:hover": {
+        opacity: "0.6",
+      },
+    },
   })
 );
 
-interface SearchProps {
-  onSearch: OnSearchFunc;
-  onChangeSearchType: OnChangeSearchType;
+interface Props {
+  onSearch: (search: string) => void;
+  onChangeSearchType: (event: React.ChangeEvent<{ value: SearchType }>) => void;
   className?: string;
   defaultValue: SearchType;
 }
 
-interface OnSearchFunc {
-  (event: React.FormEvent<HTMLDivElement>): void;
-}
-interface OnChangeSearchType {
-  (event: React.ChangeEvent<{ value: SearchType }>): void;
-}
-
-const SearchBar: FC<SearchProps> = ({
+const SearchBar: FC<Props> = ({
   onSearch,
   onChangeSearchType,
   className,
   defaultValue,
 }) => {
   const classes = useStyles();
+  const [searchValue, setSearchValue] = useState("");
   const [searchType, setSearchType] = useState(defaultValue);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSuggestions(getItems(searchType, 3));
+  }, [searchType]);
 
   const handleChangeSearchType = (
     event: React.ChangeEvent<{ value: unknown }>
   ): void => {
+    const casted = event as React.ChangeEvent<{ value: SearchType }>;
     setSearchType(event.target.value as SearchType);
-
-    //TODO: find a better way...
-    onChangeSearchType({
-      ...event,
-      target: { value: event.target.value as SearchType },
-    } as React.ChangeEvent<{ value: SearchType }>);
+    onChangeSearchType(casted);
   };
+
+  const renderSuggestion = (item: string): JSX.Element => (
+    <Typography
+      className={classes.suggestionItem}
+      onClick={() => {
+        onSearch(item);
+        setSearchValue(item);
+      }}
+    >
+      {item}
+    </Typography>
+  );
+
+  const handleSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
+    onSearch(((event.target as HTMLFormElement).elements as any).search.value);
+  };
+
+  const renderSuggestions = (): JSX.Element => (
+    <div className={classes.suggestionsRoot}>
+      <Typography component="div" style={{ whiteSpace: "nowrap" }}>
+        Suggested searches:
+      </Typography>
+      <div className={classes.itemContainer}>
+        {suggestions.map(renderSuggestion)}
+      </div>
+    </div>
+  );
 
   return (
     <div className={className}>
-      <Paper component="form" className={classes.root} onSubmit={onSearch}>
+      <Paper component="form" className={classes.root} onSubmit={handleSubmit}>
         <FormControl variant="outlined">
           <Select
             value={searchType}
@@ -118,6 +165,8 @@ const SearchBar: FC<SearchProps> = ({
           placeholder="Search"
           name="search"
           autoComplete="off"
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
         />
         <IconButton
           type="submit"
@@ -127,6 +176,7 @@ const SearchBar: FC<SearchProps> = ({
           <SearchIcon />
         </IconButton>
       </Paper>
+      {renderSuggestions()}
     </div>
   );
 };

@@ -65,14 +65,9 @@ const ListMaker: React.FC = () => {
   const classes = useStyles();
 
   //Handle a search submit
-  const handleSearch = (event: React.FormEvent<HTMLDivElement>): void => {
-    event.preventDefault();
-
+  const handleSearch = (searchValue: string): void => {
     //Clear the previous search's results
     setCharacterData([]);
-    //Get the search value
-    const searchValue = ((event.target as HTMLFormElement).elements as any)
-      .search.value;
 
     if (searchValue.length >= 3) {
       setLoading(true);
@@ -101,6 +96,7 @@ const ListMaker: React.FC = () => {
       } else if (searchType === SearchType.Anime) {
         searchAnime(searchValue, 10).then(
           (res) => {
+            console.log(res);
             setSearchResult(
               res.data.results.map((elem) => ({
                 id: elem.mal_id,
