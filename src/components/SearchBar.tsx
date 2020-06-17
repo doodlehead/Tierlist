@@ -130,7 +130,8 @@ const SearchBar: FC<Props> = ({
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
-    onSearch(((event.target as HTMLFormElement).elements as any).search.value);
+    onSearch(searchValue);
+    event.preventDefault();
   };
 
   const renderSuggestions = (): JSX.Element => (

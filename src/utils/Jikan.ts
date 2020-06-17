@@ -126,3 +126,12 @@ export const getMangaCharacters = (
 ): Promise<AxiosResponse<{ characters: MangaCharacterData[] }>> => {
   return axios.get(`${baseUrl}/manga/${malId}/characters`);
 };
+
+export const filterAnime = (data: AnimeSearchResult[]): AnimeSearchResult[] => {
+  //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
+  return data.filter(
+    (elem) =>
+      Object.values(Rating).indexOf(elem.rated) <=
+      Object.values(Rating).indexOf(Rating.r)
+  );
+};

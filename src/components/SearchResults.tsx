@@ -78,15 +78,6 @@ interface Props {
 
 const SearchResults: FC<Props> = ({ data, loading, onSelect, className }) => {
   const classes = useStyles();
-  //TODO: move to outside parent?
-  // const filteredData = data.filter((elem) => {
-  //   //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
-
-  //   return (
-  //     Object.values(Rating).indexOf(elem.rated) <=
-  //     Object.values(Rating).indexOf(Rating.r)
-  //   );
-  // });
 
   //Anime/Manga panel
   const renderItem = (item: ResultItem): JSX.Element => {

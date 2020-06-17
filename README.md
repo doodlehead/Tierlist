@@ -27,7 +27,6 @@ For example, a quick Game of Thrones tierlist I made with my app. S-tier meaning
 
 ## TODO
 
-- Re-implement/refactor filtering by rating (`SearchResults`)
 - Refactor `ListMaker` because it's getting big
 - Manage/delete old localStorage data? Have a delete button?
 - Paginate search results for TVDB API requests

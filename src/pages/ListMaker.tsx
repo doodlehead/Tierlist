@@ -7,6 +7,7 @@ import {
   searchManga,
   getAnimeCharactersStaff,
   getMangaCharacters,
+  filterAnime,
 } from "../utils/Jikan";
 import {
   searchSeries,
@@ -20,6 +21,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import TierList from "../components/TierList/TierList";
 import { CharacterItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
+import mangaFilter from "../utils/mangaFilter";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
 
 //TODO: validate inputs
@@ -50,6 +52,8 @@ const mediaTypePrefix = {
   [SearchType.Anime]: "anime-",
   [SearchType.Manga]: "manga",
 };
+
+const filterSet = new Set(mangaFilter);
 
 //TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
 const ListMaker: React.FC = () => {
@@ -97,8 +101,9 @@ const ListMaker: React.FC = () => {
         searchAnime(searchValue, 10).then(
           (res) => {
             console.log(res);
+            const filtered = filterAnime(res.data.results);
             setSearchResult(
-              res.data.results.map((elem) => ({
+              filtered.map((elem) => ({
                 id: elem.mal_id,
                 label: elem.title,
                 imageUrl: elem.image_url,
@@ -117,8 +122,12 @@ const ListMaker: React.FC = () => {
       } else if (searchType === SearchType.Manga) {
         searchManga(searchValue, 10).then(
           (res) => {
+            console.log(res);
+            const filtered = res.data.results.filter(
+              (manga) => !filterSet.has(manga.mal_id)
+            );
             setSearchResult(
-              res.data.results.map((elem) => ({
+              filtered.map((elem) => ({
                 id: elem.mal_id,
                 label: elem.title,
                 imageUrl: elem.image_url,
