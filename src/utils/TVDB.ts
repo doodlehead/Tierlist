@@ -11,7 +11,7 @@ export const TVDBImgUrl = "https://artworks.thetvdb.com/banners/";
 export const missingActorUrl = "https://artworks.thetvdb.com/person/actor.jpg";
 
 //For local testing
-const proxyBaseUrl = `http://localhost:5001/${process.env.REACT_APP_DEV_PROJECT_ID}/us-central1/proxy`;
+const proxyBaseUrl = `https://us-central1-test-firebase-3704b.cloudfunctions.net/proxy`;
 
 export interface SeriesResult {
   id: number;
