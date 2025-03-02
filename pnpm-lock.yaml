@@ -17,6 +17,9 @@ importers:
       '@material-ui/lab':
         specifier: ^4.0.0-alpha.53
         version: 4.0.0-alpha.61(@material-ui/core@4.12.4(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0))(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
+      '@material-ui/styles':
+        specifier: ^4.11.5
+        version: 4.11.5(@types/react@16.14.62)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
       '@testing-library/jest-dom':
         specifier: ^4.2.4
         version: 4.2.4
