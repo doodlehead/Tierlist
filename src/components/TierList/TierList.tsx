@@ -1,21 +1,17 @@
-import React, { FC, useState, useRef, useEffect, useContext } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { AnimeCharacterData, DragAnimeCharItem } from "../../utils/Jikan";
+import { FC, useState, useRef, useContext } from "react";
+import { makeStyles, createStyles } from "@mui/styles";
 import { ReactSortable } from "react-sortablejs";
 import CharacterTile from "./CharacterTile";
 import Tier from "./Tier";
 import { DefaultColourOrder, DefaultTiers } from "./constants";
 import domtoimage from "dom-to-image";
-import Button from "@material-ui/core/Button";
+import { Theme, Button } from "@mui/material";
 import { saveAs } from "file-saver";
-//import { Save, SaveAlt } from "@material-ui/icons";
-import SaveIcon from "@material-ui/icons/Save";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import { Save, SaveAlt } from "@mui/icons-material";
 import MediaQuery from "react-responsive";
-import { CharacterItem, DragItem } from "../../utils/common";
+import { CharacterItem } from "../../utils/common";
 import AppContext from "../../contexts/AppContext";
 
-/* eslint-disable @typescript-eslint/camelcase */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -39,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-/* eslint-enable @typescript-eslint/camelcase */
 
 interface Props {
   mediaId: string | number;
@@ -105,7 +100,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
       });
     } catch (err) {
       appContext.setMessage?.({
-        text: err.toString(),
+        text: `${err}`,
         severity: "error",
       });
     }
@@ -124,7 +119,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
           className={classes.button}
           variant="outlined"
         >
-          <SaveAltIcon className={classes.btnIcon} />
+          <SaveAlt className={classes.btnIcon} />
           Download <MediaQuery minWidth={768}>image</MediaQuery>
         </Button>
         <Button
@@ -132,7 +127,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
           className={classes.button}
           variant="outlined"
         >
-          <SaveIcon className={classes.btnIcon} />
+          <Save className={classes.btnIcon} />
           Save
         </Button>
       </div>

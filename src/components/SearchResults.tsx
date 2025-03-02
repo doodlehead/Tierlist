@@ -1,11 +1,10 @@
-import React, { FC } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { FC } from "react";
+import { makeStyles, createStyles } from "@mui/styles";
 //import { AnimeSearchResult, Rating } from "../utils/Jikan";
 import { ResultItem } from "../utils/common";
 
 const mobileItemWidth = 100;
-/* eslint-disable @typescript-eslint/camelcase */
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "grid",
@@ -63,7 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-/* eslint-enable @typescript-eslint/camelcase */
 
 interface Props {
   data: ResultItem[];

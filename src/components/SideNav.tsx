@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useContext } from "react";
+import { FC, useEffect, useContext } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Drawer,
   List,
@@ -8,11 +8,8 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from "@material-ui/core";
-//import InboxIcon from "@material-ui/icons/MoveToInbox";
-//import MailIcon from "@material-ui/icons/Mail";
-import HomeIcon from "@material-ui/icons/Home";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
+} from "@mui/material";
+import { Home, NoteAdd } from "@mui/icons-material";
 import AppContext from "../contexts/AppContext";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -41,13 +38,13 @@ const SideNav: FC = () => {
         <List>
           <ListItem button onClick={() => history.push("/Tierlist")}>
             <ListItemIcon>
-              <HomeIcon />
+              <Home />
             </ListItemIcon>
             <ListItemText primary={"Home"} />
           </ListItem>
           <ListItem button onClick={() => history.push("/Tierlist/create")}>
             <ListItemIcon>
-              <NoteAddIcon />
+              <NoteAdd />
             </ListItemIcon>
             <ListItemText primary={"Tierlist creator"} />
           </ListItem>

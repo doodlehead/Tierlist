@@ -1,4 +1,4 @@
-import React from "react";
+import { createContext } from "react";
 import { SnackbarMessage } from "../utils/common";
 
 type ContextProps = {
@@ -7,7 +7,7 @@ type ContextProps = {
   setMessage: (msg: SnackbarMessage) => void;
 };
 
-const AppContext = React.createContext<Partial<ContextProps>>({
+const AppContext = createContext<Partial<ContextProps>>({
   showSidebar: false,
 });
 

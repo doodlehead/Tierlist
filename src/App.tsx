@@ -1,24 +1,23 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, ReactElement } from "react";
 import "./App.scss";
 import ListMaker from "./pages/ListMaker";
 import Header from "./components/Header";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@mui/styles";
 import SideNav from "./components/SideNav";
 import AppContext from "./contexts/AppContext";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-import { Snackbar } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
+import { createTheme, Snackbar } from "@mui/material";
+import Alert from "@mui/lab/Alert";
 import { SnackbarMessage } from "./utils/common";
 
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
   palette: {
-    type: "dark",
+    // type: "dark",
   },
 });
 
-const App = (): React.ReactElement => {
+const App = (): ReactElement => {
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [message, setMessage] = useState<SnackbarMessage>({
@@ -67,7 +66,7 @@ const App = (): React.ReactElement => {
           <Snackbar
             open={showSnackbar}
             autoHideDuration={6000}
-            onClose={handleSnackbarClose}
+            // onClose={handleSnackbarClose}
           >
             <Alert
               elevation={6}

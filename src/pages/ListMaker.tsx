@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import { useState, useContext, FC } from "react";
 import "./ListMaker.scss";
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
@@ -16,8 +16,8 @@ import {
   TVDBImgUrl,
   missingActorUrl,
 } from "../utils/TVDB";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles, createStyles } from "@mui/styles";
+import { CircularProgress } from "@mui/material";
 import TierList from "../components/TierList/TierList";
 import { CharacterItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
@@ -26,7 +26,7 @@ import mangaFilter from "../utils/mangaFilter";
 
 //TODO: validate inputs
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "grid",
@@ -56,7 +56,7 @@ const mediaTypePrefix = {
 const filterSet = new Set(mangaFilter);
 
 //TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
-const ListMaker: React.FC = () => {
+const ListMaker: FC = () => {
   const [searchResult, setSearchResult] = useState<ResultItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [mediaId, setMediaId] = useState<number>();
@@ -91,7 +91,7 @@ const ListMaker: React.FC = () => {
           },
           (err) => {
             setMessage?.({
-              text: "Could not search, TVDB's API is down",
+              text: `Could not search, TVDB's API is down: ${err}`,
               severity: "error",
             });
             setLoading(false);
@@ -113,7 +113,7 @@ const ListMaker: React.FC = () => {
           },
           (err) => {
             setMessage?.({
-              text: "Could not search, either MAL or Jikan's API is down",
+              text: `Could not search, either MAL or Jikan's API is down: ${err}`,
               severity: "error",
             });
             setLoading(false);
@@ -137,7 +137,7 @@ const ListMaker: React.FC = () => {
           },
           (err) => {
             setMessage?.({
-              text: "Could not search, either MAL or Jikan's API is down",
+              text: `Could not search, either MAL or Jikan's API is down: ${err}`,
               severity: "error",
             });
             setLoading(false);

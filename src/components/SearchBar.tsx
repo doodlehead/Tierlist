@@ -1,15 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-//import Button from "@material-ui/core/Button";
-//import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
-//import MenuIcon from "@material-ui/icons/Menu";
-import Divider from "@material-ui/core/Divider";
-import Select from "@material-ui/core/Select";
-import { Menu, MenuItem, FormControl, Typography } from "@material-ui/core";
+import { FC, useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { makeStyles, createStyles } from "@mui/styles";
+import { IconButton, Paper, InputBase, Divider, Select, MenuItem, FormControl, Typography, Theme } from "@mui/material";
+import { Search } from "@mui/icons-material";
 import { SearchType } from "../utils/common";
 import { getItems } from "../utils/SuggestedSearches";
 
@@ -89,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   onSearch: (search: string) => void;
-  onChangeSearchType: (event: React.ChangeEvent<{ value: SearchType }>) => void;
+  onChangeSearchType: (event: ChangeEvent<{ value: SearchType }>) => void;
   className?: string;
   defaultValue: SearchType;
 }
@@ -110,9 +102,9 @@ const SearchBar: FC<Props> = ({
   }, [searchType]);
 
   const handleChangeSearchType = (
-    event: React.ChangeEvent<{ value: unknown }>
+    event: ChangeEvent<{ value: unknown }>
   ): void => {
-    const casted = event as React.ChangeEvent<{ value: SearchType }>;
+    const casted = event as ChangeEvent<{ value: SearchType }>;
     setSearchType(event.target.value as SearchType);
     onChangeSearchType(casted);
   };
@@ -129,7 +121,7 @@ const SearchBar: FC<Props> = ({
     </Typography>
   );
 
-  const handleSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
+  const handleSubmit = (event: FormEvent<HTMLDivElement>): void => {
     onSearch(searchValue);
     event.preventDefault();
   };
@@ -174,7 +166,7 @@ const SearchBar: FC<Props> = ({
           className={classes.iconButton}
           aria-label="search"
         >
-          <SearchIcon />
+          <Search />
         </IconButton>
       </Paper>
       {renderSuggestions()}

@@ -1,10 +1,8 @@
-import { AnimeCharacterData } from "../../utils/Jikan";
-import React, { FC, useState } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { FC } from "react";
+import { makeStyles, createStyles } from "@mui/styles";
 import { CharacterItem } from "../../utils/common";
 
-/* eslint-disable @typescript-eslint/camelcase */
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     characterTile: {
       position: "relative",
@@ -39,7 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-/* eslint-enable @typescript-eslint/camelcase */
 
 interface CharacterTileProps {
   char: CharacterItem;

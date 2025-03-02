@@ -1,11 +1,10 @@
-import React, { useState, FC, useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { useState, FC, useEffect } from "react";
+import { makeStyles, createStyles } from "@mui/styles";
 import { ReactSortable } from "react-sortablejs";
-import { DragAnimeCharItem } from "../../utils/Jikan";
 import CharacterTile from "./CharacterTile";
 import { CharacterItem } from "../../utils/common";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
@@ -58,7 +57,7 @@ const Tier: FC<Props> = ({
 
   useEffect(() => {
     onTierChange(list, index);
-  }, [list, index]);
+  }, [list, index, onTierChange]);
 
   return (
     <div className={classes.root}>

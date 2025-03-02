@@ -1,14 +1,14 @@
-import React from "react";
 import "./Header.scss";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
+  Theme,
   //Button,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { makeStyles, createStyles } from "@mui/styles";
 import AppContext from "../contexts/AppContext";
 
 const useStyles = makeStyles((theme: Theme) =>
