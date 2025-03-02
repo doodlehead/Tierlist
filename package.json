@@ -15,7 +15,6 @@
     "clsx": "^2.1.1",
     "dom-to-image": "^2.6.0",
     "file-saver": "^2.0.2",
-    "firebase": "^11.4.0",
     "jikan-client": "^1.0.0",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
