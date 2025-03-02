@@ -228,10 +228,9 @@ const ListMaker: FC = () => {
         onSearch={handleSearch}
         className={classes.searchBar}
         defaultValue={searchType}
-        onChangeSearchType={(event): void => {
-          setSearchType(event.target.value);
-          //searchType.current = event.target.value;
-          console.log(event.target.value);
+        onChangeSearchType={(searchType) => {
+          setSearchType(searchType);
+          console.log(searchType);
         }}
       />
       {!(characterData.length > 0) && (

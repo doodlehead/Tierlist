@@ -1,6 +1,6 @@
-import { FC, useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
-import { IconButton, Paper, InputBase, Divider, Select, MenuItem, FormControl, Typography, Theme } from "@mui/material";
+import { IconButton, Paper, InputBase, Divider, Select, MenuItem, FormControl, Typography, Theme, SelectChangeEvent } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { SearchType } from "../utils/common";
 import { getItems } from "../utils/SuggestedSearches";
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   onSearch: (search: string) => void;
-  onChangeSearchType: (event: ChangeEvent<{ value: SearchType }>) => void;
+  onChangeSearchType: (searchType: SearchType) => void;
   className?: string;
   defaultValue: SearchType;
 }
@@ -101,12 +101,10 @@ const SearchBar: FC<Props> = ({
     setSuggestions(getItems(searchType, 3));
   }, [searchType]);
 
-  const handleChangeSearchType = (
-    event: ChangeEvent<{ value: unknown }>
-  ): void => {
-    const casted = event as ChangeEvent<{ value: SearchType }>;
+  const handleChangeSearchType = (event: SelectChangeEvent<SearchType>): void => {
+    // const casted = event as SelectChangeEvent<{ value: SearchType }>;
     setSearchType(event.target.value as SearchType);
-    onChangeSearchType(casted);
+    onChangeSearchType(event.target.value as SearchType);
   };
 
   const renderSuggestion = (item: string): JSX.Element => (
@@ -121,7 +119,7 @@ const SearchBar: FC<Props> = ({
     </Typography>
   );
 
-  const handleSubmit = (event: FormEvent<HTMLDivElement>): void => {
+  const handleSubmit = (event: FormEvent): void => {
     onSearch(searchValue);
     event.preventDefault();
   };

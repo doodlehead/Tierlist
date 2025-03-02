@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent, ReactElement } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import "./App.scss";
 import ListMaker from "./pages/ListMaker";
 import Header from "./components/Header";
@@ -29,10 +29,10 @@ const App = (): ReactElement => {
     setMessage({ text: "", severity: message.severity });
   };
 
-  const handleSnackbarClose = (event: SyntheticEvent, reason: string): void => {
-    if (reason === "clickaway") return;
-    setShowSnackbar(false);
-  };
+  // const handleSnackbarClose = (event: SyntheticEvent, reason: string): void => {
+  //   if (reason === "clickaway") return;
+  //   setShowSnackbar(false);
+  // };
 
   //Show the snackbar when there's a message available
   useEffect(() => {

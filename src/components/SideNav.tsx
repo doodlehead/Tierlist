@@ -4,10 +4,10 @@ import { makeStyles } from "@mui/styles";
 import {
   Drawer,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   Divider,
+  ListItemButton,
 } from "@mui/material";
 import { Home, NoteAdd } from "@mui/icons-material";
 import AppContext from "../contexts/AppContext";
@@ -36,18 +36,18 @@ const SideNav: FC = () => {
     return (
       <div className={clsx(classes.list)} role="presentation">
         <List>
-          <ListItem button onClick={() => history.push("/Tierlist")}>
+          <ListItemButton onClick={() => history.push("/Tierlist")}>
             <ListItemIcon>
               <Home />
             </ListItemIcon>
             <ListItemText primary={"Home"} />
-          </ListItem>
-          <ListItem button onClick={() => history.push("/Tierlist/create")}>
+          </ListItemButton>
+          <ListItemButton onClick={() => history.push("/Tierlist/create")}>
             <ListItemIcon>
               <NoteAdd />
             </ListItemIcon>
             <ListItemText primary={"Tierlist creator"} />
-          </ListItem>
+          </ListItemButton>
         </List>
         <Divider />
       </div>
