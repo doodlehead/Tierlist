@@ -2,7 +2,7 @@ import { useState, FC, useEffect } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
 import { ReactSortable } from "react-sortablejs";
 import CharacterTile from "./CharacterTile";
-import { CharacterItem } from "../../utils/common";
+import { CharacterDragItem } from "../../utils/common";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -37,10 +37,10 @@ const useStyles = makeStyles(() =>
 interface Props {
   name: string;
   group: string;
-  listItems: CharacterItem[];
+  listItems: CharacterDragItem[];
   labelColour?: string;
   index: number;
-  onTierChange: (list: CharacterItem[], index: number) => void;
+  onTierChange: (list: CharacterDragItem[], index: number) => void;
 }
 
 //Represents a tier in a tierlist. Example: "A-tier"
@@ -53,7 +53,7 @@ const Tier: FC<Props> = ({
   onTierChange,
 }): JSX.Element => {
   const classes = useStyles();
-  const [list, setList] = useState<CharacterItem[]>(listItems || []);
+  const [list, setList] = useState<CharacterDragItem[]>(listItems || []);
 
   useEffect(() => {
     onTierChange(list, index);

@@ -43,6 +43,7 @@ const App = (): ReactElement => {
     }
   }, [message]);
 
+  // TODO: fix the routing here. It's done weird...
   return (
     <div id="app">
       <ThemeProvider theme={darkTheme}>

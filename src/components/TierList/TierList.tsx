@@ -9,7 +9,7 @@ import { Theme, Button } from "@mui/material";
 import { saveAs } from "file-saver";
 import { Save, SaveAlt } from "@mui/icons-material";
 import MediaQuery from "react-responsive";
-import { CharacterItem } from "../../utils/common";
+import { CharacterDragItem } from "../../utils/common";
 import AppContext from "../../contexts/AppContext";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   mediaId: string | number;
-  characterData: CharacterItem[];
+  characterData: CharacterDragItem[];
 }
 
 interface TierData {
-  sorted: CharacterItem[][];
-  unsorted: CharacterItem[];
+  sorted: CharacterDragItem[][];
+  unsorted: CharacterDragItem[];
 }
 
 const store = window.localStorage;
@@ -55,7 +55,7 @@ const store = window.localStorage;
  */
 const getSaveData = (
   mediaId: string | number,
-  characterData: CharacterItem[]
+  characterData: CharacterDragItem[]
 ): TierData => {
   const saveData = store.getItem(`${mediaId}`);
   if (saveData) {
@@ -72,7 +72,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
   const tierData = useRef<TierData>(getSaveData(mediaId, characterData));
-  const [list, setList] = useState<CharacterItem[]>(tierData.current.unsorted);
+  const [list, setList] = useState<CharacterDragItem[]>(tierData.current.unsorted);
   const appContext = useContext(AppContext);
 
   //Handle "download image"
@@ -107,7 +107,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
   };
 
   //Propogate state upwards from Tier
-  const handleTierChange = (list: CharacterItem[], index: number): void => {
+  const handleTierChange = (list: CharacterDragItem[], index: number): void => {
     tierData.current.sorted[index] = list;
   };
 

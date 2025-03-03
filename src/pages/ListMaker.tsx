@@ -5,7 +5,7 @@ import SearchResults from "../components/SearchResults";
 import {
   searchAnime,
   searchManga,
-  getAnimeCharactersStaff,
+  getAnimeCharacters,
   getMangaCharacters,
   filterAnime,
 } from "../utils/Jikan";
@@ -19,7 +19,7 @@ import {
 import { makeStyles, createStyles } from "@mui/styles";
 import { CircularProgress } from "@mui/material";
 import TierList from "../components/TierList/TierList";
-import { CharacterItem, ResultItem, SearchType } from "../utils/common";
+import { CharacterDragItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
 import mangaFilter from "../utils/mangaFilter";
 //import Firebase, { FirebaseContext } from "../components/Firebase";
@@ -55,12 +55,12 @@ const mediaTypePrefix = {
 
 const filterSet = new Set(mangaFilter);
 
-//TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
+// TODO: Refactor this into someting more focused. It's handling too many responsibilities right now...
 const ListMaker: FC = () => {
   const [searchResult, setSearchResult] = useState<ResultItem[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [mediaId, setMediaId] = useState<number>();
-  const [characterData, setCharacterData] = useState<CharacterItem[]>([]);
+  const [characterData, setCharacterData] = useState<CharacterDragItem[]>([]);
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
   //const [token, setToken] = useState<string>(localStorage.getItem("auth-token") || "");
   //const firebase = useContext(FirebaseContext);
@@ -94,6 +94,7 @@ const ListMaker: FC = () => {
               text: `Could not search, TVDB's API is down: ${err}`,
               severity: "error",
             });
+            console.error(err);
             setLoading(false);
           }
         );
@@ -101,12 +102,12 @@ const ListMaker: FC = () => {
         searchAnime(searchValue, 10).then(
           (res) => {
             console.log(res);
-            const filtered = filterAnime(res.data.results);
+            const filtered = filterAnime(res.data.data);
             setSearchResult(
-              filtered.map((elem) => ({
-                id: elem.mal_id,
-                label: elem.title,
-                imageUrl: elem.image_url,
+              filtered.map((anime) => ({
+                id: anime.mal_id,
+                label: anime.title,
+                imageUrl: anime.images.jpg.image_url
               }))
             );
             setLoading(false);
@@ -116,21 +117,21 @@ const ListMaker: FC = () => {
               text: `Could not search, either MAL or Jikan's API is down: ${err}`,
               severity: "error",
             });
+            console.error(err);
             setLoading(false);
           }
         );
       } else if (searchType === SearchType.Manga) {
         searchManga(searchValue, 10).then(
           (res) => {
-            console.log(res);
-            const filtered = res.data.results.filter(
+            const filtered = res.data.data.filter(
               (manga) => !filterSet.has(manga.mal_id)
             );
             setSearchResult(
               filtered.map((elem) => ({
                 id: elem.mal_id,
                 label: elem.title,
-                imageUrl: elem.image_url,
+                imageUrl: elem.images.jpg.image_url,
               }))
             );
             setLoading(false);
@@ -140,6 +141,7 @@ const ListMaker: FC = () => {
               text: `Could not search, either MAL or Jikan's API is down: ${err}`,
               severity: "error",
             });
+            console.error(err);
             setLoading(false);
           }
         );
@@ -167,10 +169,10 @@ const ListMaker: FC = () => {
       });
       setLoading(false);
     } else if (searchType === SearchType.Anime) {
-      getAnimeCharactersStaff(id)
+      getAnimeCharacters(id)
         .then((res) => {
           //console.log(res);
-          if (!res || res.data.characters.length === 0) {
+          if (!res || res.data.data.length === 0) {
             setMessage?.({
               text: "Uh oh, looks like that Anime entry has no characters.",
               severity: "error",
@@ -178,10 +180,10 @@ const ListMaker: FC = () => {
           } else {
             setMediaId(id);
             setCharacterData(
-              res.data.characters.map((elem) => ({
-                ...elem,
-                id: elem.mal_id,
-                imageUrl: elem.image_url,
+              res.data.data.map((elem) => ({
+                id: elem.character.mal_id,
+                imageUrl: elem.character.images.jpg.image_url,
+                name: elem.character.name
               }))
             );
           }
@@ -194,8 +196,7 @@ const ListMaker: FC = () => {
     } else if (searchType === SearchType.Manga) {
       getMangaCharacters(id)
         .then((res) => {
-          console.log(res);
-          if (!res || res.data.characters.length === 0) {
+          if (!res || res.data.data.length === 0) {
             setMessage?.({
               text: "Uh oh, looks like that Manga entry has no characters.",
               severity: "error",
@@ -203,10 +204,10 @@ const ListMaker: FC = () => {
           } else {
             setMediaId(id);
             setCharacterData(
-              res.data.characters.map((elem) => ({
-                ...elem,
-                id: elem.mal_id,
-                imageUrl: elem.image_url,
+              res.data.data.map((elem) => ({
+                id: elem.character.mal_id,
+                imageUrl: elem.character.images.jpg.image_url,
+                name: elem.character.name
               }))
             );
           }
@@ -217,6 +218,7 @@ const ListMaker: FC = () => {
             text: err.response.data.message,
             severity: "error",
           });
+          console.error(err);
           setLoading(false);
         });
     }

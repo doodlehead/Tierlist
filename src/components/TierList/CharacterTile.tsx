@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
-import { CharacterItem } from "../../utils/common";
+import { CharacterDragItem } from "../../utils/common";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -39,7 +39,7 @@ const useStyles = makeStyles(() =>
 );
 
 interface CharacterTileProps {
-  char: CharacterItem;
+  char: CharacterDragItem;
 }
 
 //Tile that represents a character.

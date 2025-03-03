@@ -19,11 +19,11 @@ export interface ResultItem {
   imageUrl: string;
 }
 
-export interface CharacterItem extends DragItem {
+export interface CharacterDragItem extends DragItem {
   id: number;
   name: string;
-  actor?: string;
   imageUrl: string;
+  actor?: string;
 }
 
 export interface SnackbarMessage {
