@@ -43,7 +43,7 @@ export const suggestedSearches = {
   ],
 };
 
-export const getItems = (
+export const getRandomSearches = (
   searchType: SearchType,
   numItems: number
 ): string[] => {

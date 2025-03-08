@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
 import { CharacterDragItem } from "../../utils/common";
 
@@ -43,7 +42,7 @@ interface CharacterTileProps {
 }
 
 //Tile that represents a character.
-const CharacterTile: FC<CharacterTileProps> = ({ char }): JSX.Element => {
+const CharacterTile = ({ char }: CharacterTileProps) => {
   const classes = useStyles();
 
   return (

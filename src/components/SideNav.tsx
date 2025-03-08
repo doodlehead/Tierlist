@@ -1,4 +1,4 @@
-import { FC, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
 import {
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SideNav: FC = () => {
+const SideNav = () => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();

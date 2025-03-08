@@ -3,7 +3,7 @@ import { makeStyles, createStyles } from "@mui/styles";
 import { IconButton, Paper, InputBase, Divider, Select, MenuItem, FormControl, Typography, Theme, SelectChangeEvent } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { SearchType } from "../utils/common";
-import { getItems } from "../utils/SuggestedSearches";
+import { getRandomSearches } from "../utils/SuggestedSearches";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,7 +98,7 @@ const SearchBar: FC<Props> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   useEffect(() => {
-    setSuggestions(getItems(searchType, 3));
+    setSuggestions(getRandomSearches(searchType, 3));
   }, [searchType]);
 
   const handleChangeSearchType = (event: SelectChangeEvent<SearchType>): void => {
