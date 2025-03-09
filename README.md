@@ -2,7 +2,7 @@
 
 Create a tierlist for your favourite tv shows, movies, anime or manga. More item types may be added if I can find public APIs for them.
 
-[https://doodlehead.github.io/Tierlist/](https://doodlehead.github.io/Tierlist/)
+[https://tierlist-fawn.vercel.app/](https://tierlist-fawn.vercel.app/)
 
 ## What's a tierlist?
 
@@ -34,12 +34,21 @@ For example, a quick Game of Thrones tierlist I made with my app. A character hi
 
 ## Future changes
 
+- Use Tailwind CSS?
+  - Shadcn?
 - Customizable tiers, add/remove and rename
 - Customizable appearance of the list
 - Fast tier assignment using right-click
+- Custom image generation with GenAI?
+  - Separate versions for API fetched and GenAI versions?
+  - Hard-coded client-side, pre-generated examples
+  - Custom, on-demand generation of items based on GenAI?
+  - Generated images are more costly in terms of time and money...
 - Custom images upload
-- "Fork" a tierlist
+- "Fork" a tierlist?
+  - What did I mean by this? (lol)
 - Use a state management library like Redux or MobX (if needed)
+  - Jotai?
 - Progressive Web App?
-- Automated testing? (Cypress? Jest?)
+- Automated testing? (Cypress? Jest? Vitest)
 - Use CI + CD?
