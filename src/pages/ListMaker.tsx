@@ -9,22 +9,16 @@ import {
   getMangaCharacters,
   filterAnime,
 } from "../utils/Jikan";
-import {
-  searchSeries,
-  TVDBUrl,
-  getSeriesCharacters,
-  TVDBImgUrl,
-  missingActorUrl,
-} from "../utils/TVDB";
+import { searchShow, getShowCharacters, MISSING_IMAGE_PLACEHOLDER } from "../utils/tvMaze";
 import { makeStyles, createStyles } from "@mui/styles";
 import { CircularProgress } from "@mui/material";
 import TierList from "../components/TierList/TierList";
 import { CharacterDragItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
 import mangaFilter from "../utils/mangaFilter";
-//import Firebase, { FirebaseContext } from "../components/Firebase";
 
 //TODO: validate inputs
+const CHAR_PLACEHOLDER_IMG = "https://artworks.thetvdb.com/person/actor.jpg";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -62,8 +56,6 @@ const ListMaker: FC = () => {
   const [mediaId, setMediaId] = useState<number>();
   const [characterData, setCharacterData] = useState<CharacterDragItem[]>([]);
   const [searchType, setSearchType] = useState<SearchType>(SearchType.TVshow);
-  //const [token, setToken] = useState<string>(localStorage.getItem("auth-token") || "");
-  //const firebase = useContext(FirebaseContext);
   const { setMessage } = useContext(AppContext);
 
   const classes = useStyles();
@@ -77,27 +69,39 @@ const ListMaker: FC = () => {
       setLoading(true);
 
       if (searchType === SearchType.TVshow) {
-        searchSeries(searchValue).then(
-          (res) => {
-            console.log(res);
-            setSearchResult(
-              res.data.data.map((elem) => ({
-                id: elem.id,
-                label: elem.seriesName,
-                imageUrl: `${TVDBUrl}${elem.image}`,
-              }))
-            );
-            setLoading(false);
-          },
-          (err) => {
-            setMessage?.({
-              text: `Could not search, TVDB's API is down: ${err}`,
-              severity: "error",
-            });
-            console.error(err);
-            setLoading(false);
-          }
-        );
+        searchShow(searchValue).then(res => {
+          console.log(res);
+
+          // TODO: placeholder image for missing images?
+          setSearchResult(res.data.map((elem) => ({
+            id: elem.show.id,
+            label: elem.show.name,
+            imageUrl: elem.show.image?.medium || MISSING_IMAGE_PLACEHOLDER,
+          })))
+
+          setLoading(false);
+        })
+        // searchSeries(searchValue).then(
+        //   (res) => {
+        //     console.log(res);
+        //     setSearchResult(
+        //       res.data.data.map((elem) => ({
+        //         id: elem.id,
+        //         label: elem.seriesName,
+        //         imageUrl: `${TVDBUrl}${elem.image}`,
+        //       }))
+        //     );
+        //     setLoading(false);
+        //   },
+        //   (err) => {
+        //     setMessage?.({
+        //       text: `Could not search, TVDB's API is down: ${err}`,
+        //       severity: "error",
+        //     });
+        //     console.error(err);
+        //     setLoading(false);
+        //   }
+        // );
       } else if (searchType === SearchType.Anime) {
         searchAnime(searchValue, 10).then(
           (res) => {
@@ -153,17 +157,24 @@ const ListMaker: FC = () => {
   const handleOnSelect = (id: number): void => {
     setLoading(true);
     if (searchType === SearchType.TVshow) {
-      getSeriesCharacters(id).then((res) => {
+      getShowCharacters(id).then((res) => {
+        const seenIds = new Set<number>();
+        const filteredChars = res.data.filter((char) => {
+          if (seenIds.has(char.character.id)) {
+            return false; // Skip if ID is already seen
+          } else {
+            seenIds.add(char.character.id); // Add ID to the set
+            return true; // Keep the object
+          }
+        });
         console.log(res);
         setMediaId(id);
         setCharacterData(
-          res.data.data.map((elem) => ({
-            id: elem.id,
-            name: elem.role,
-            actor: elem.name,
-            imageUrl: elem.image
-              ? `${TVDBImgUrl}${elem.image}`
-              : missingActorUrl,
+          filteredChars.map((elem) => ({
+            id: elem.character.id,
+            name: elem.character.name,
+            actor: elem.person.name,
+            imageUrl: elem.character.image?.medium || elem.person.image?.medium || CHAR_PLACEHOLDER_IMG
           }))
         );
       });

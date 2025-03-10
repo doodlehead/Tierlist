@@ -51,7 +51,6 @@ const Header = (): JSX.Element => {
               <Typography variant="h4" className={classes.title}>
                 Tierlist Maker
               </Typography>
-              {/* <Button color="inherit">Login</Button> */}
             </Toolbar>
           </AppBar>
         </div>
