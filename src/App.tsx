@@ -3,10 +3,10 @@ import "./App.scss";
 import ListMaker from "./pages/ListMaker";
 import Header from "./components/Header";
 import { ThemeProvider } from "@mui/styles";
-import SideNav from "./components/SideNav";
+// import SideNav from "./components/SideNav";
 import AppContext from "./contexts/AppContext";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Homepage from "./pages/Homepage";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import Homepage from "./pages/Homepage";
 import { createTheme, Snackbar } from "@mui/material";
 import Alert from "@mui/lab/Alert";
 import { SnackbarMessage } from "./utils/common";
@@ -34,7 +34,7 @@ const App = (): ReactElement => {
   //   setShowSnackbar(false);
   // };
 
-  //Show the snackbar when there's a message available
+  // Show the snackbar when there's a message available
   useEffect(() => {
     if (message?.text) {
       setShowSnackbar(true);
@@ -52,7 +52,8 @@ const App = (): ReactElement => {
         >
           <Header />
           <div id="appContent">
-            <Router>
+            <ListMaker />
+            {/* <Router>
               <Switch>
                 <Route path="/Tierlist/create">
                   <ListMaker />
@@ -62,7 +63,7 @@ const App = (): ReactElement => {
                 </Route>
               </Switch>
               <SideNav />
-            </Router>
+            </Router> */}
           </div>
           <Snackbar
             open={showSnackbar}
