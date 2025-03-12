@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
 import { ReactSortable } from "react-sortablejs";
 import CharacterTile from "./CharacterTile";
@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  mediaId: string | number;
+interface TierlistProps {
+  mediaId: string;
   characterData: CharacterDragItem[];
 }
 
@@ -46,6 +46,7 @@ interface TierData {
   unsorted: CharacterDragItem[];
 }
 
+// TODO: make a class that manages the save data?
 const store = window.localStorage;
 
 /**
@@ -53,10 +54,7 @@ const store = window.localStorage;
  * @param mediaId - the series/anime/manga's ID with the media's prefix
  * @param characterData - character data
  */
-const getSaveData = (
-  mediaId: string | number,
-  characterData: CharacterDragItem[]
-): TierData => {
+const getSaveData = (mediaId: string, characterData: CharacterDragItem[]): TierData => {
   const saveData = store.getItem(`${mediaId}`);
   if (saveData) {
     return JSON.parse(saveData) as TierData;
@@ -68,14 +66,14 @@ const getSaveData = (
   }
 };
 
-const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
+const Tierlist = ({ mediaId, characterData }: TierlistProps) => {
   const classes = useStyles();
   const tierlistEl = useRef<HTMLDivElement>(null);
   const tierData = useRef<TierData>(getSaveData(mediaId, characterData));
   const [list, setList] = useState<CharacterDragItem[]>(tierData.current.unsorted);
   const appContext = useContext(AppContext);
 
-  //Handle "download image"
+  // Handle "download image"
   const handleExport = (): void => {
     if (tierlistEl.current) {
       domtoimage
@@ -89,10 +87,10 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
     }
   };
 
-  //Handle save to browser localstorage
+  // Handle save to browser localstorage
   const handleSave = (): void => {
     try {
-      tierData.current.unsorted = list; //Update the unsorted list
+      tierData.current.unsorted = list; // Update the unsorted list
       store.setItem(`${mediaId}`, JSON.stringify(tierData.current));
       appContext.setMessage?.({
         text: "Saved successfully!",
@@ -106,7 +104,7 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
     }
   };
 
-  //Propogate state upwards from Tier
+  // Propogate state upwards from Tier
   const handleTierChange = (list: CharacterDragItem[], index: number): void => {
     tierData.current.sorted[index] = list;
   };
@@ -159,4 +157,4 @@ const TierList: FC<Props> = ({ mediaId, characterData }): JSX.Element => {
   );
 };
 
-export default TierList;
+export default Tierlist;

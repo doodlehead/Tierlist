@@ -12,7 +12,7 @@ import {
 import { searchShow, getShowCharacters, MISSING_IMAGE_PLACEHOLDER } from "../utils/tvMaze";
 import { makeStyles, createStyles } from "@mui/styles";
 import { CircularProgress } from "@mui/material";
-import TierList from "../components/TierList/TierList";
+import Tierlist from "../components/Tierlist/Tierlist";
 import { CharacterDragItem, ResultItem, SearchType } from "../utils/common";
 import AppContext from "../contexts/AppContext";
 import mangaFilter from "../utils/mangaFilter";
@@ -257,7 +257,7 @@ const ListMaker: FC = () => {
         <CircularProgress size={150} className={classes.loadingCircle} />
       )}
       {characterData.length > 0 && mediaId && (
-        <TierList
+        <Tierlist
           mediaId={`${mediaTypePrefix[searchType]}${mediaId}`}
           characterData={characterData}
         />

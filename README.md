@@ -19,23 +19,30 @@ For example, a quick Game of Thrones tierlist I made with my app. A character hi
 - Built using Typescript and React + Vite
 - Deployed using Vercel
 - Component library: [material-ui](https://material-ui.com/)
-- TV show and movie data fetched from [theTBDB's API](https://thetvdb.com/)
+- TV show and movie data fetched from [TVMaze's API](https://www.tvmaze.com/api)
 - Anime and manga data fetched from [Jikan's API](https://jikan.moe/)
+
+## Features
+
+- Prepopulate and rank characters from tv shows, anime or manga using the search feature
+- Save your tierlist for a particular show to your browser to come back and edit it later
+- Export and download the tierlist as an image so you can share it
 
 ## Stuff to fix
 
+- More modern component library and styling, it's looking dated...
+  - Use Tailwind CSS?
+  - Shadcn?
 - Refactor `ListMaker` because it's getting big
 - Manage/delete old localStorage data? Have a delete button?
-- Paginate search results for TVDB API requests
-- Have a "show more" option for Jikan API requests
-- Take a look at some good open-source React projects for inspiration on proper application folder structure and organization
-- Routing is done weird...
+- Show more/pagination for searches?
+- Better project structuring?
 
 
-## Future changes
+## Future features/changes
 
-- Use Tailwind CSS?
-  - Shadcn?
+- Image export options (size/resolution, compression?)
+- Dynamic recommendations based on recent shows/anime?
 - Customizable tiers, add/remove and rename
 - Customizable appearance of the list
 - Fast tier assignment using right-click
@@ -47,7 +54,7 @@ For example, a quick Game of Thrones tierlist I made with my app. A character hi
 - Custom images upload
 - "Fork" a tierlist?
   - What did I mean by this? (lol)
-- Use a state management library like Redux or MobX (if needed)
+- Use a state management library like Redux/MobX/Zustand (if needed)
   - Jotai?
 - Progressive Web App?
 - Automated testing? (Cypress? Jest? Vitest)
