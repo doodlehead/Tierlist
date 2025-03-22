@@ -1,8 +1,7 @@
-import { FC, useState, useEffect, FormEvent } from "react";
+import { FC, useState, useEffect } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
 import {
   IconButton,
-  Paper,
   InputBase,
   Divider,
   Select,
@@ -101,7 +100,7 @@ interface Props {
 const SearchBar: FC<Props> = ({
   onSearch,
   onChangeSearchType,
-  className,
+  // className,
   defaultValue,
 }) => {
   const classes = useStyles();
@@ -133,10 +132,10 @@ const SearchBar: FC<Props> = ({
     </Typography>
   );
 
-  const handleSubmit = (event: FormEvent): void => {
-    onSearch(searchValue);
-    event.preventDefault();
-  };
+  // const handleSubmit = (event: FormEvent): void => {
+  //   onSearch(searchValue);
+  //   event.preventDefault();
+  // };
 
   const renderSuggestions = (): JSX.Element => (
     <Box display="flex" paddingY="12px" sx={{ color: "var(--hint)"}}>

@@ -2,7 +2,6 @@ import "./Header.scss";
 import {
   AppBar,
   Toolbar,
-  IconButton,
   Typography,
   Container,
 } from "@mui/material";
@@ -14,7 +13,7 @@ const Header = () => {
 
   return (
     <AppContext.Consumer>
-      {({ setShowSidebar }) => (
+      {() => (
         <div className="header">
           <AppBar position="static" sx={{ backgroundColor: "#1A1F2C"}}>
             <Container maxWidth="xl">
