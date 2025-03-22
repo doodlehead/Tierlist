@@ -30,18 +30,29 @@ For example, a quick Game of Thrones tierlist I made with my app. A character hi
 
 ## Stuff to fix
 
+- Remove enums because they're clunky
 - More modern component library and styling, it's looking dated...
   - Use Tailwind CSS?
   - Shadcn?
-- Refactor `ListMaker` because it's getting big
 - Manage/delete old localStorage data? Have a delete button?
 - Show more/pagination for searches?
 - Better project structuring?
+- Refactor `ListMaker` because it's getting big?
 
 
 ## Future features/changes
 
+- FAQ/Guide
+- Character pool sorting/filtering?
+  - Alphabetical, main/supporting
 - Image export options (size/resolution, compression?)
+- Settings panel (more customization that is off by default)
+  - Custom tier color coding?
+  - Custom tier naming?
+- Clear tier and clear all characters actions
+- "Saved lists" page?
+  - Resume/Load button
+  - Delete/clear button
 - Dynamic recommendations based on recent shows/anime?
 - Customizable tiers, add/remove and rename
 - Customizable appearance of the list

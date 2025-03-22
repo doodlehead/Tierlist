@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { DragItem } from "./common";
 
 /*
- * Helper methods that will call Jikan's HTTP API. I need to make my own jikan-client one day...
+ * Helper methods that call Jikan's REST API.
  */
 
 export enum CharacterRole {
@@ -19,7 +19,7 @@ export enum Rating {
   rx = "Rx",
 }
 
-//Anime and Manga search result shared values
+// Anime and Manga search result shared values
 export interface MALItem {
   end_date: string | null;
   images: {

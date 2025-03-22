@@ -30,14 +30,14 @@ const useStyles = makeStyles(() =>
     loadingCircle: {
       margin: "100px auto",
     },
-    searchBar: {
-      marginBottom: 10,
-    },
-    "@media only screen and (min-width: 768px)": {
-      searchBar: {
-        marginBottom: 40,
-      },
-    },
+    // searchBar: {
+    //   marginBottom: 10,
+    // },
+    // "@media only screen and (min-width: 768px)": {
+    //   searchBar: {
+    //     marginBottom: 40,
+    //   },
+    // },
   })
 );
 
@@ -239,7 +239,7 @@ const ListMaker: FC = () => {
     <div className="pageRoot">
       <SearchBar
         onSearch={handleSearch}
-        className={classes.searchBar}
+        // className={classes.searchBar}
         defaultValue={searchType}
         onChangeSearchType={(searchType) => {
           setSearchType(searchType);

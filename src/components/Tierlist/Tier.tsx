@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
       fontSize: 20,
       fontWeight: 600,
       flexGrow: 0,
-      color: "black",
+      // color: "black",
     },
     list: {
       flexGrow: 1,

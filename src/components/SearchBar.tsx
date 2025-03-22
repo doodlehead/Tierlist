@@ -1,18 +1,30 @@
 import { FC, useState, useEffect, FormEvent } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
-import { IconButton, Paper, InputBase, Divider, Select, MenuItem, FormControl, Typography, Theme, SelectChangeEvent } from "@mui/material";
+import {
+  IconButton,
+  Paper,
+  InputBase,
+  Divider,
+  Select,
+  MenuItem,
+  FormControl,
+  Typography,
+  Theme,
+  SelectChangeEvent,
+  Box,
+} from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { SearchType } from "../utils/common";
 import { getRandomSearches } from "../utils/SuggestedSearches";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      alignItems: "center",
-      margin: "0 8px",
-      backgroundColor: "var(--darker-grey)",
-    },
+    // root: {
+    //   display: "flex",
+    //   alignItems: "center",
+    //   margin: "0 8px",
+    //   backgroundColor: "var(--darker-grey)",
+    // },
     input: {
       marginLeft: theme.spacing(1),
       flex: 1,
@@ -52,11 +64,11 @@ const useStyles = makeStyles((theme: Theme) =>
         padding: "0 12px",
       },
     },
-    suggestionsRoot: {
-      display: "flex",
-      marginTop: "12px",
-      marginLeft: "20px",
-    },
+    // suggestionsRoot: {
+    //   display: "flex",
+    //   marginTop: "12px",
+    //   marginLeft: "20px",
+    // },
     itemContainer: {
       display: "flex",
       flexWrap: "wrap",
@@ -101,7 +113,9 @@ const SearchBar: FC<Props> = ({
     setSuggestions(getRandomSearches(searchType, 3));
   }, [searchType]);
 
-  const handleChangeSearchType = (event: SelectChangeEvent<SearchType>): void => {
+  const handleChangeSearchType = (
+    event: SelectChangeEvent<SearchType>
+  ): void => {
     // const casted = event as SelectChangeEvent<{ value: SearchType }>;
     setSearchType(event.target.value as SearchType);
     onChangeSearchType(event.target.value as SearchType);
@@ -125,50 +139,64 @@ const SearchBar: FC<Props> = ({
   };
 
   const renderSuggestions = (): JSX.Element => (
-    <div className={classes.suggestionsRoot}>
-      <Typography component="div" style={{ whiteSpace: "nowrap" }}>
+    <Box display="flex" paddingY="12px" sx={{ color: "var(--hint)"}}>
+      <Typography style={{ whiteSpace: "nowrap" }}>
         Suggested searches:
       </Typography>
       <div className={classes.itemContainer}>
         {suggestions.map(renderSuggestion)}
       </div>
-    </div>
+    </Box>
   );
 
   return (
-    <div className={className}>
-      <Paper component="form" className={classes.root} onSubmit={handleSubmit}>
-        <FormControl variant="outlined">
-          <Select
-            value={searchType}
-            onChange={handleChangeSearchType}
-            className={classes.select}
-          >
-            <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
-            {/* <MenuItem value={SearchType.Movie}>Movie</MenuItem> */}
-            <MenuItem value={SearchType.Anime}>Anime</MenuItem>
-            <MenuItem value={SearchType.Manga}>Manga</MenuItem>
-          </Select>
-        </FormControl>
-        <Divider className={classes.divider} orientation="vertical" />
-        <InputBase
-          className={classes.input}
-          placeholder="Search"
-          name="search"
-          autoComplete="off"
-          value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
-        />
-        <IconButton
-          type="submit"
-          className={classes.iconButton}
-          aria-label="search"
+    <Box display="flex" justifyContent="center">
+      <div style={{ justifySelf: "center" }}>
+        <Box
+          display="flex"
+          sx={{
+            maxWidth: "600px",
+            backgroundColor: "rgb(33 49 68 / 50%)",
+            borderRadius: "8px",
+            border: "1px solid var(--border-blue)"
+          }}
         >
-          <Search />
-        </IconButton>
-      </Paper>
-      {renderSuggestions()}
-    </div>
+          {/* <Paper component="form" onSubmit={handleSubmit}> */}
+          <FormControl>
+            <Select
+              value={searchType}
+              onChange={handleChangeSearchType}
+              // className={classes.select}
+            >
+              <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
+              {/* <MenuItem value={SearchType.Movie}>Movie</MenuItem> */}
+              <MenuItem value={SearchType.Anime}>Anime</MenuItem>
+              <MenuItem value={SearchType.Manga}>Manga</MenuItem>
+            </Select>
+          </FormControl>
+          <Divider className={classes.divider} orientation="vertical" />
+          <InputBase
+            sx={{ flexGrow: 1, padding: "0 12px" }}
+            // className={classes.input}
+            placeholder="Search"
+            name="search"
+            autoComplete="off"
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+          />
+          <IconButton
+            type="submit"
+            sx={{ flexBasis: "56px" }}
+            // className={classes.iconButton}
+            aria-label="search"
+          >
+            <Search />
+          </IconButton>
+          {/* </Paper> */}
+        </Box>
+        {renderSuggestions()}
+      </div>
+    </Box>
   );
 };
 
