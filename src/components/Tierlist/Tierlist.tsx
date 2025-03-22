@@ -14,10 +14,10 @@ import AppContext from "../../contexts/AppContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      padding: 10,
-      backgroundColor: "var(--dark-grey)",
-    },
+    // root: {
+    //   padding: 10,
+    //   backgroundColor: "var(--dark-grey)",
+    // },
     unrankedList: {
       display: "flex",
       flexWrap: "wrap",
@@ -129,7 +129,7 @@ const Tierlist = ({ mediaId, characterData }: TierlistProps) => {
           Save
         </Button>
       </div>
-      <div ref={tierlistEl} className={classes.root}>
+      <div ref={tierlistEl}>
         {DefaultTiers.map((tier, index) => (
           <Tier
             index={index}
@@ -140,6 +140,7 @@ const Tierlist = ({ mediaId, characterData }: TierlistProps) => {
             listItems={tierData.current.sorted[index]}
             group="tierlist"
             labelColour={`var(--tier-${DefaultColourOrder[index]})`}
+            style={{ margin: "8px" }}
           />
         ))}
         <ReactSortable

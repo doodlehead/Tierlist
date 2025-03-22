@@ -68,19 +68,21 @@ const useStyles = makeStyles((theme: Theme) =>
     //   marginTop: "12px",
     //   marginLeft: "20px",
     // },
-    itemContainer: {
-      display: "flex",
-      flexWrap: "wrap",
-      "& > p": {
-        marginLeft: "8px",
-        marginBottom: "6px",
-      },
-    },
+    // itemContainer: {
+    //   display: "flex",
+    //   flexWrap: "wrap",
+    //   "& > p": {
+    //     marginLeft: "8px",
+    //     marginBottom: "6px",
+    //   },
+    // },
     suggestionItem: {
-      border: "1px solid var(--lighter-grey)",
+      marginLeft: "8px",
+      backgroundColor: "var(--secondary-blue)",
+      border: "2px solid var(--border-blue)",
       fontSize: "14px",
       padding: "2px 8px 0",
-      borderRadius: "14px",
+      borderRadius: "8px",
       cursor: "pointer",
       whiteSpace: "nowrap",
       "&:hover": {
@@ -120,17 +122,9 @@ const SearchBar: FC<Props> = ({
     onChangeSearchType(event.target.value as SearchType);
   };
 
-  const renderSuggestion = (item: string): JSX.Element => (
-    <Typography
-      className={classes.suggestionItem}
-      onClick={() => {
-        onSearch(item);
-        setSearchValue(item);
-      }}
-    >
-      {item}
-    </Typography>
-  );
+  // const renderSuggestion = (item: string): JSX.Element => (
+
+  // );
 
   // const handleSubmit = (event: FormEvent): void => {
   //   onSearch(searchValue);
@@ -138,13 +132,21 @@ const SearchBar: FC<Props> = ({
   // };
 
   const renderSuggestions = (): JSX.Element => (
-    <Box display="flex" paddingY="12px" sx={{ color: "var(--hint)"}}>
-      <Typography style={{ whiteSpace: "nowrap" }}>
-        Suggested searches:
-      </Typography>
-      <div className={classes.itemContainer}>
-        {suggestions.map(renderSuggestion)}
-      </div>
+    <Box display="flex" paddingY="12px" sx={{ alignItems: "center", color: "var(--hint)" }}>
+      <Typography sx={{ whiteSpace: "nowrap" }}>Suggested searches:</Typography>
+      <Box display="flex">
+        {suggestions.map((item) => (
+          <div
+            className={classes.suggestionItem}
+            onClick={() => {
+              onSearch(item);
+              setSearchValue(item);
+            }}
+          >
+            <Typography>{item}</Typography>
+          </div>
+        ))}
+      </Box>
     </Box>
   );
 
@@ -155,9 +157,9 @@ const SearchBar: FC<Props> = ({
           display="flex"
           sx={{
             maxWidth: "600px",
-            backgroundColor: "rgb(33 49 68 / 50%)",
+            backgroundColor: "var(--secondary-blue)",
             borderRadius: "8px",
-            border: "1px solid var(--border-blue)"
+            border: "2px solid var(--border-blue)"
           }}
         >
           {/* <Paper component="form" onSubmit={handleSubmit}> */}
