@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "var(--secondary-blue)",
       border: "2px solid var(--border-blue)",
       fontSize: "14px",
-      padding: "2px 8px 0",
+      padding: "4px 12px",
       borderRadius: "8px",
       cursor: "pointer",
       whiteSpace: "nowrap",
@@ -143,7 +143,7 @@ const SearchBar: FC<Props> = ({
               setSearchValue(item);
             }}
           >
-            <Typography>{item}</Typography>
+            <Typography fontSize="14px">{item}</Typography>
           </div>
         ))}
       </Box>

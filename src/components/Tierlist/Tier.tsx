@@ -66,16 +66,26 @@ const Tier: FC<Props> = ({
   return (
     <Box
       className={classes.root}
-      sx={{ border: `2px solid ${labelColour}`, borderRadius: "8px" }}
+      sx={{ 
+        border: `2px solid ${labelColour}`, 
+        borderRadius: "8px",
+        alignItems: "stretch",
+      }}
       {...restProps}
     >
       <div
         className={classes.tierLabel}
-        style={{ backgroundColor: labelColour }}
+        style={{ 
+          backgroundColor: labelColour,
+          display: "flex",
+           alignItems: "center",
+           justifyContent: "center"
+        }}
       >
-        <p style={{ verticalAlign: "middle" }}>{name}</p>
+        <p>{name}</p>
       </div>
       <ReactSortable
+        style={{ background: `linear-gradient(to right, var(--tier-${labelColour}-transparent) 0%, rgba(0, 0, 0, 0) 100%)` }}
         list={list}
         setList={setList}
         className={classes.list}
