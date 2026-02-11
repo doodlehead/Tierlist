@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 import { makeStyles, createStyles } from "@mui/styles";
 import {
   IconButton,
@@ -6,7 +6,6 @@ import {
   Divider,
   Select,
   MenuItem,
-  FormControl,
   Typography,
   Theme,
   SelectChangeEvent,
@@ -89,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         opacity: "0.6",
       },
     },
-  })
+  }),
 );
 
 interface Props {
@@ -115,7 +114,7 @@ const SearchBar: FC<Props> = ({
   }, [searchType]);
 
   const handleChangeSearchType = (
-    event: SelectChangeEvent<SearchType>
+    event: SelectChangeEvent<SearchType>,
   ): void => {
     // const casted = event as SelectChangeEvent<{ value: SearchType }>;
     setSearchType(event.target.value as SearchType);
@@ -126,13 +125,17 @@ const SearchBar: FC<Props> = ({
 
   // );
 
-  // const handleSubmit = (event: FormEvent): void => {
-  //   onSearch(searchValue);
-  //   event.preventDefault();
-  // };
+  const handleSubmit = (event: FormEvent): void => {
+    onSearch(searchValue);
+    event.preventDefault();
+  };
 
   const renderSuggestions = (): JSX.Element => (
-    <Box display="flex" paddingY="12px" sx={{ alignItems: "center", color: "var(--hint)" }}>
+    <Box
+      display="flex"
+      paddingY="12px"
+      sx={{ alignItems: "center", color: "var(--hint)" }}
+    >
       <Typography sx={{ whiteSpace: "nowrap" }}>Suggested searches:</Typography>
       <Box display="flex">
         {suggestions.map((item) => (
@@ -159,41 +162,39 @@ const SearchBar: FC<Props> = ({
             maxWidth: "600px",
             backgroundColor: "var(--secondary-blue)",
             borderRadius: "8px",
-            border: "2px solid var(--border-blue)"
+            border: "2px solid var(--border-blue)",
           }}
         >
-          {/* <Paper component="form" onSubmit={handleSubmit}> */}
-          <FormControl>
-            <Select
-              value={searchType}
-              onChange={handleChangeSearchType}
-              // className={classes.select}
-            >
-              <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
-              {/* <MenuItem value={SearchType.Movie}>Movie</MenuItem> */}
-              <MenuItem value={SearchType.Anime}>Anime</MenuItem>
-              <MenuItem value={SearchType.Manga}>Manga</MenuItem>
-            </Select>
-          </FormControl>
-          <Divider className={classes.divider} orientation="vertical" />
-          <InputBase
-            sx={{ flexGrow: 1, padding: "0 12px" }}
-            // className={classes.input}
-            placeholder="Search"
-            name="search"
-            autoComplete="off"
-            value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
-          />
-          <IconButton
-            type="submit"
-            sx={{ flexBasis: "56px" }}
-            // className={classes.iconButton}
-            aria-label="search"
+          <Select
+            value={searchType}
+            onChange={handleChangeSearchType}
+            // className={classes.select}
           >
-            <Search />
-          </IconButton>
-          {/* </Paper> */}
+            <MenuItem value={SearchType.TVshow}>TV show</MenuItem>
+            {/* <MenuItem value={SearchType.Movie}>Movie</MenuItem> */}
+            <MenuItem value={SearchType.Anime}>Anime</MenuItem>
+            <MenuItem value={SearchType.Manga}>Manga</MenuItem>
+          </Select>
+          <Divider className={classes.divider} orientation="vertical" />
+          <Box component="form" onSubmit={handleSubmit} display="contents">
+            <InputBase
+              sx={{ flexGrow: 1, padding: "0 12px" }}
+              // className={classes.input}
+              placeholder="Search"
+              name="search"
+              autoComplete="off"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+            <IconButton
+              type="submit"
+              sx={{ flexBasis: "56px" }}
+              // className={classes.iconButton}
+              aria-label="search"
+            >
+              <Search />
+            </IconButton>
+          </Box>
         </Box>
         {renderSuggestions()}
       </div>

@@ -78,11 +78,16 @@ const Tier: FC<Props> = ({
         style={{ 
           backgroundColor: labelColour,
           display: "flex",
-           alignItems: "center",
-           justifyContent: "center"
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "4px 0 0 4px"
         }}
       >
-        <p>{name}</p>
+        <p style={{
+          WebkitTextFillColor: "white",
+          WebkitTextStroke: "1px black",
+          font: "800 32px Arial"
+        }}>{name}</p>
       </div>
       <ReactSortable
         style={{ background: `linear-gradient(to right, var(--tier-${labelColour}-transparent) 0%, rgba(0, 0, 0, 0) 100%)` }}

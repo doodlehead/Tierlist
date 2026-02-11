@@ -10,14 +10,16 @@ export enum CharacterRole {
   Supporting = "Supporting",
 }
 
-export enum Rating {
-  g = "G",
-  pg = "PG",
-  pg13 = "PG-13",
-  r17 = "R",
-  r = "R+",
-  rx = "Rx",
-}
+export const RATING_ORDER = {
+  "G": 0,
+  "PG": 1,
+  "PG-13": 2,
+  "R": 3,
+  "R+": 4,
+  "Rx": 5,
+} as const;
+
+export type Rating = keyof typeof RATING_ORDER;
 
 // Anime and Manga search result shared values
 export interface MALItem {
@@ -62,7 +64,8 @@ export interface AnimeSearchItem extends MALItem {
   airing: boolean;
   episodes: number;
   type: string;
-  rated: Rating;
+  // rated: Rating;
+  rating: string;
 }
 
 export interface MangaSearchItem extends MALItem {
@@ -207,11 +210,6 @@ export const getMangaCharactersV3 = (
   return axios.get(`${v3BaseUrl}/manga/${malId}/characters`);
 };
 
-export const filterAnime = (data: AnimeSearchItem[]): AnimeSearchItem[] => {
-  //TODO: fix this. OH GOD WHY. TYPESCRIPT ENUMS ARE USELESS :'(
-  return data.filter(
-    (elem) =>
-      Object.values(Rating).indexOf(elem.rated) <=
-      Object.values(Rating).indexOf(Rating.r)
-  );
-};
+// export const filterAnime = (data: AnimeSearchItem[]): AnimeSearchItem[] => {
+//   return data.filter((elem) => (RATING_ORDER[elem.rated] <= RATING_ORDER["R"]));
+// };

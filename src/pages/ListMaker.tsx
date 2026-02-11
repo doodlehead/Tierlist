@@ -7,7 +7,7 @@ import {
   searchManga,
   getAnimeCharacters,
   getMangaCharacters,
-  filterAnime,
+  // filterAnime,
 } from "../utils/Jikan";
 import { searchShow, getShowCharacters, MISSING_IMAGE_PLACEHOLDER } from "../utils/tvMaze";
 import { makeStyles, createStyles } from "@mui/styles";
@@ -106,7 +106,8 @@ const ListMaker: FC = () => {
         searchAnime(searchValue, 10).then(
           (res) => {
             console.log(res);
-            const filtered = filterAnime(res.data.data);
+            // const filtered = filterAnime(res.data.data);
+            const filtered = res.data.data;
             setSearchResult(
               filtered.map((anime) => ({
                 id: anime.mal_id,
